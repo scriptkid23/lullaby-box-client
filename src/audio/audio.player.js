@@ -1,6 +1,8 @@
+import { Button } from "react-bootstrap";
 import React, { useState, useEffect, useRef } from "react";
 import { SocketContext } from "../context/socket.context";
 import AudioControls from "./audio.control";
+import AddTrack from "../track/add.track";
 const AudioPlayer = ({ tracks }) => {
   // const [trackIndex, setTrackIndex] = useState(0);
   // const [trackProgress, setTrackProgress] = useState(0);
@@ -51,20 +53,20 @@ const AudioPlayer = ({ tracks }) => {
   const toPrevTrack = () => {
     if (state.trackIndex - 1 < 0) {
       // actions.setTrackIndex(tracks.length - 1);
-      state.socket.sendMessage({trackIndex:tracks.length - 1})
+      state.socket.sendSetTrackIndex({trackIndex:tracks.length - 1})
     } else {
       // actions.setTrackIndex(state.trackIndex - 1);
-      state.socket.sendMessage({trackIndex:state.trackIndex - 1})
+      state.socket.sendSetTrackIndex({trackIndex:state.trackIndex - 1})
     }
   };
 
   const toNextTrack = () => {
     if (state.trackIndex < tracks.length - 1) {
       // actions.setTrackIndex(state.trackIndex + 1);
-      state.socket.sendMessage({trackIndex:state.trackIndex + 1})
+      state.socket.sendSetTrackIndex({trackIndex:state.trackIndex + 1})
     } else {
       // actions.setTrackIndex(0);
-      state.socket.sendMessage({trackIndex:0})
+      state.socket.sendSetTrackIndex({trackIndex:0})
     }
   };
 
@@ -105,7 +107,7 @@ const AudioPlayer = ({ tracks }) => {
     <div className="audio-player">
       <div className="track-info">
         <img
-          className="artwork"
+          className={`artwork ${state.isPlaying && 'active'}`}
           src={image}
           alt={`track artwork for ${title} by ${artist}`}
         />
@@ -130,6 +132,7 @@ const AudioPlayer = ({ tracks }) => {
           style={{ background: trackStyling }}
         />
       </div>
+      <AddTrack/>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import React from "react";
 import { SocketService } from "../services/socket.service";
-import audioSrc from '../assets/tayto.mp3'
-import ghedep from '../assets/ghedep.mp3'
+import mockup from '../assets/mockup.mp3'
 const SocketContext = React.createContext({});
 
 class SocketProvider extends React.Component {
@@ -28,20 +27,15 @@ class SocketProvider extends React.Component {
       tracks:[
         ...this.state.tracks,
         {
-          title: "Tay to",
-          artist: "MCK",
-          audioSrc: audioSrc,
-          image: "https://i1.sndcdn.com/avatars-eZz2vSyDPYLl6J1Y-0LETkg-original.jpg",
-        },
-        {
-          title: "Ghệ Đẹp",
-          artist: "Remix",
-          audioSrc: ghedep,
-          image: "https://i1.sndcdn.com/avatars-eZz2vSyDPYLl6J1Y-0LETkg-original.jpg",
+          title: "Người chơi hệ đẹp",
+          artist: "16 Typh",
+          audioSrc: mockup,
+          image: "https://i.ytimg.com/vi/1VnsC7SgkBI/hqdefault.jpg",
         },
       ]
     })
-    socket.receiverMessage(this.setTrackIndex);
+    socket.receiverSetTrackIndex(this.setTrackIndex);
+    socket.receiverTrack(this.receiverTrack);
     this.setState({ socket: socket });
   }
   setIsPlaying = (flag) => {
@@ -49,7 +43,6 @@ class SocketProvider extends React.Component {
     this.setState({isPlaying: flag});
   }
   setTrackProgress = (value) => {
-    
     this.setState({trackProgress: value});
   }
   sendMessage = (data) => {
@@ -57,6 +50,17 @@ class SocketProvider extends React.Component {
   };
   setTrackIndex = (index ) => {
     this.setState({trackIndex: index.trackIndex})
+  }
+  addTrack = (value) => {
+    this.state.socket.sendAddTrack(value);
+  }
+  receiverTrack = (value) => {
+    this.setState({
+      tracks:[
+        ...this.state.tracks,
+        value,
+      ]
+    })
   }
 
   render() {
@@ -72,7 +76,8 @@ class SocketProvider extends React.Component {
               sendMessage:this.sendMessage,
               setIsPlaying: this.setIsPlaying,
               setTrackProgress: this.setTrackProgress,
-              setTrackIndex: this.setTrackIndex
+              setTrackIndex: this.setTrackIndex,
+              addTrack: this.addTrack,
           }
       }
     return (
