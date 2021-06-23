@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import App from './App';
+import App from './app/App';
 import reportWebVitals from './reportWebVitals';
+import { SocketProvider } from './context/socket.context';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SocketProvider>
+       <App />
+    </SocketProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

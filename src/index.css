@@ -11,3 +11,100 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+input[type="range"] {
+  height: 5px;
+  -webkit-appearance: none;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #3b7677;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.audio-player {
+  max-width: 260px;
+  padding: 20px;
+  border-radius: 20px;
+  margin:auto;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  color: #0A1931;
+}
+
+.artwork {
+  border-radius: 120px;
+  display: block;
+  margin: auto;
+  height: 200px;
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.track-info {
+  text-align: center;
+  z-index: 1;
+  position: relative;
+}
+
+.title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 30px;
+}
+
+.artist {
+  font-weight: 300;
+  margin-top: 0;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+.audio-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  margin: 0 auto 15px;
+}
+
+.audio-controls .prev svg,
+.audio-controls .next svg {
+  width: 35px;
+  height: 35px;
+}
+
+.audio-controls .play svg,
+.audio-controls .pause svg {
+  height: 40px;
+  width: 40px;
+}
+
+.audio-controls path {
+  fill: #185ADB;
+}
+
+
+
+.color-backdrop.playing {
+  animation: colorChange 20s alternate infinite;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .artwork.active {
+    animation: track-spin infinite 20s linear;
+  }
+}
+
+@keyframes track-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
