@@ -12,8 +12,7 @@ export class SocketService {
         });
     }
     sendMessage = (value) => {
-        console.log("send message");
-        this.socket.emit("send_message",{data:value});
+        this.socket.emit("send_message",value);
     }
     receiverMessage = (callback) => {
         this.socket.on("receiver_message",callback);

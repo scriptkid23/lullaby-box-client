@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { SocketContext } from "../context/socket.context";
 import AudioControls from "./audio.control";
 const AudioPlayer = ({ tracks }) => {
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [trackProgress, setTrackProgress] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [trackIndex, setTrackIndex] = useState(0);
+  // const [trackProgress, setTrackProgress] = useState(0);
+ 
   const {state, actions} = React.useContext(SocketContext);
-  console.log(actions)
-  const { title, artist, color, image, audioSrc } = tracks[trackIndex];
+  
+  const { title, artist , image, audioSrc } = tracks[state.trackIndex];
 
   const audioRef = useRef(new Audio(audioSrc));
   const intervalRef = useRef();
@@ -15,7 +15,7 @@ const AudioPlayer = ({ tracks }) => {
 
   const { duration } = audioRef.current;
   const currentPercentage = duration
-    ? `${(trackProgress / duration) * 100}%`
+    ? `${(state.trackProgress / duration) * 100}%`
     : "0%";
   const trackStyling = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #fff), color-stop(${currentPercentage}, #777))
@@ -29,7 +29,8 @@ const AudioPlayer = ({ tracks }) => {
       if (audioRef.current.ended) {
         toNextTrack();
       } else {
-        setTrackProgress(audioRef.current.currentTime);
+        actions.setTrackProgress(audioRef.current.currentTime);
+        
       }
     }, [1000]);
   };
@@ -37,58 +38,61 @@ const AudioPlayer = ({ tracks }) => {
     // Clear any timers already running
     clearInterval(intervalRef.current);
     audioRef.current.currentTime = value;
-    setTrackProgress(audioRef.current.currentTime);
+    actions.setTrackProgress(audioRef.current.currentTime);
   };
-
   const onScrubEnd = () => {
     // If not already playing, start
-    if (!isPlaying) {
-      setIsPlaying(true);
+    if (!state.isPlaying) {
+      actions.setIsPlaying(true);
     }
     startTimer();
   };
 
   const toPrevTrack = () => {
-    if (trackIndex - 1 < 0) {
-      setTrackIndex(tracks.length - 1);
+    if (state.trackIndex - 1 < 0) {
+      // actions.setTrackIndex(tracks.length - 1);
+      state.socket.sendMessage({trackIndex:tracks.length - 1})
     } else {
-      setTrackIndex(trackIndex - 1);
+      // actions.setTrackIndex(state.trackIndex - 1);
+      state.socket.sendMessage({trackIndex:state.trackIndex - 1})
     }
   };
 
   const toNextTrack = () => {
-    if (trackIndex < tracks.length - 1) {
-      setTrackIndex(trackIndex + 1);
+    if (state.trackIndex < tracks.length - 1) {
+      // actions.setTrackIndex(state.trackIndex + 1);
+      state.socket.sendMessage({trackIndex:state.trackIndex + 1})
     } else {
-      setTrackIndex(0);
+      // actions.setTrackIndex(0);
+      state.socket.sendMessage({trackIndex:0})
     }
   };
 
   useEffect(() => {
-    if (isPlaying) {
+    if (state.isPlaying) {
       audioRef.current.play();
       startTimer();
     } else {
       audioRef.current.pause();
     }
-  }, [isPlaying]);
+  }, [state.isPlaying]);
 
   // Handles cleanup and setup when changing tracks
   useEffect(() => {
     audioRef.current.pause();
 
     audioRef.current = new Audio(audioSrc);
-    setTrackProgress(audioRef.current.currentTime);
+    actions.setTrackProgress(audioRef.current.currentTime);
 
     if (isReady.current) {
       audioRef.current.play();
-      setIsPlaying(true);
+      actions.setIsPlaying(true);
       startTimer();
     } else {
       // Set the isReady ref as true for the next pass
       isReady.current = true;
     }
-  }, [trackIndex]);
+  }, [state.trackIndex]);
 
   useEffect(() => {
     // Pause and clean up on unmount
@@ -108,14 +112,14 @@ const AudioPlayer = ({ tracks }) => {
         <h2 className="title">{title}</h2>
         <h3 className="artist">{artist}</h3>
         <AudioControls
-          isPlaying={isPlaying}
+          isPlaying={state.isPlaying}
           onPrevClick={toPrevTrack}
           onNextClick={toNextTrack}
-          onPlayPauseClick={setIsPlaying}
+          onPlayPauseClick={actions.setIsPlaying}
         />
         <input
           type="range"
-          value={trackProgress}
+          value={state.trackProgress}
           step="1"
           min="0"
           max={duration ? duration : `${duration}`}
