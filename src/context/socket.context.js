@@ -27,10 +27,10 @@ class SocketProvider extends React.Component {
       tracks:[
         ...this.state.tracks,
         {
-          title: "Người chơi hệ đẹp",
-          artist: "16 Typh",
+          title: "To the Moon",
+          artist: "hooligan.",
           audioSrc: mockup,
-          image: "https://i.ytimg.com/vi/1VnsC7SgkBI/hqdefault.jpg",
+          image: "https://i.ytimg.com/vi/nmKTlmByng0/maxresdefault.jpg",
         },
       ]
     })
