@@ -1,25 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, ListGroup } from "react-bootstrap";
 import { SocketContext } from "../context/socket.context";
+import Axios from "axios";
+import { baseUrl } from "../constants";
+import _, { filter } from "lodash";
 function AddTrack() {
   const [show, setShow] = useState(false);
-  const [title, setTitle] = useState("");
-  const [artist, setArtist] = useState("");
-  const [audioSrc, setAudioSrc] = useState("");
-  const [image, setImage] = useState("");
+  const [list, setList] = useState([]);
+  const [tracks, setTrack] = useState([]);
+  const [toggle, setToggle] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const { state, actions } = React.useContext(SocketContext);
-  const addTrack = () => {
-    actions.addTrack({
-      title: title,
-      artist: artist,
-      audioSrc: audioSrc,
-      image: image,
+  const [query, setQuery] = React.useState("");
+  const search = async (e) => {
+    e.preventDefault();
+    const { data } = await Axios.get(baseUrl + "/audio", {
+      params: { search: query },
     });
+    console.log(data);
+    let result = [];
+    for (let i in data) {
+      result.push({
+        _id: data[i]._id,
+        title: data[i].name,
+        artist: data[i].artist,
+        audioSrc: data[i].url,
+        image: data[i].image,
+      });
+    }
+    setList(result);
+  };
+  const selectTrack = (value) => {
+    var filtered = list.filter((data, index, arr) => {
+      return data.title !== value.title;
+    });
+    setList(filtered);
+    tracks.push(value);
+    setTrack(tracks);
+  };
+  const handleSubmit = () => {
+    console.log(tracks);
+    actions.addTrack(tracks);
+    setTrack([]);
     setShow(false);
   };
+
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -31,52 +58,37 @@ function AddTrack() {
           <Modal.Title>Add Track</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Title</Form.Label>
+          <Form onSubmit={(e) => search(e)}>
+            <Form.Group className="mb-3">
+              <Form.Label>Search</Form.Label>
               <Form.Control
-                type="email"
-                value={title}
+                type="text"
+                value={query}
                 placeholder="Enter title"
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setQuery(e.target.value)}
               />
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Artist</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="type artist"
-                value={artist}
-                onChange={(e) => setArtist(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Audio Source</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="type audio source"
-                value={audioSrc}
-                onChange={(e) => setAudioSrc(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="type image"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              />
-            </Form.Group>
+            <ListGroup>
+              {list.map((value, index) => {
+                return (
+                  <ListGroup.Item
+                    key={value._id}
+                    type="button"
+                    onClick={() => selectTrack(value)}
+                  >
+                    {value.title} | {value.artist}
+                  </ListGroup.Item>
+                );
+              })}
+            </ListGroup>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
+          <Button variant="secondary" onClick={search}>
+            Search
           </Button>
-          <Button variant="primary" onClick={addTrack}>
-            Save Changes
+          <Button variant="primary" onClick={handleSubmit}>
+            Let'go
           </Button>
         </Modal.Footer>
       </Modal>

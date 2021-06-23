@@ -58,7 +58,7 @@ class SocketProvider extends React.Component {
     this.setState({
       tracks:[
         ...this.state.tracks,
-        value,
+        ...value,
       ]
     })
   }

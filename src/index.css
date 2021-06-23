@@ -37,12 +37,25 @@ input[type="range"] {
 }
 
 .artwork {
-  border-radius: 120px;
+  border-radius: 50%;
+  /* vertical-align: middle; */
   display: block;
   margin: auto;
   height: 200px;
   width: 200px;
+  object-fit: cover;
+  background-size: cover;
   margin-bottom: 10px;
+}
+.track-info::after{
+  position: absolute;
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  top: 5.4375rem;
+  left: 5.875rem;
+  background: white;
 }
 
 .track-info {

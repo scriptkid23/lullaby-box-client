@@ -132,7 +132,10 @@ const AudioPlayer = ({ tracks }) => {
           style={{ background: trackStyling }}
         />
       </div>
-      <AddTrack/>
+      <div className="d-flex justify-content-center">
+        <AddTrack/>
+      </div>
+      
     </div>
   );
 };
