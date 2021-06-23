@@ -1,5 +1,5 @@
 import SocketIOClient from "socket.io-client";
-const ENDPOINT = "ws://localhost:8081";
+
 export const ENVIRONMENTS = {
   DEVELOPMENT : "ws://localhost:8081",
   PRODUCTION : "http://metaphor-service.herokuapp.com/",
