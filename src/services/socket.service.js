@@ -2,7 +2,7 @@ import SocketIOClient from "socket.io-client";
 const ENDPOINT = "ws://localhost:8081";
 export const ENVIRONMENTS = {
   DEVELOPMENT : "ws://localhost:8081",
-  PRODUCTION : "http://metaphor-service.herokuapp.com/",
+  PRODUCTION : "http://metaphor-service.herokuapp.com",
 }
 const baseUrl = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? 
                 ENVIRONMENTS.DEVELOPMENT : 
