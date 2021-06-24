@@ -6,10 +6,10 @@ import AddTrack from "../track/add.track";
 const AudioPlayer = ({ tracks }) => {
   // const [trackIndex, setTrackIndex] = useState(0);
   // const [trackProgress, setTrackProgress] = useState(0);
- 
-  const {state, actions} = React.useContext(SocketContext);
-  
-  const { title, artist , image, audioSrc } = tracks[state.trackIndex];
+
+  const { state, actions } = React.useContext(SocketContext);
+
+  const { title, artist, image, audioSrc } = tracks[state.trackIndex];
 
   const audioRef = useRef(new Audio(audioSrc));
   const intervalRef = useRef();
@@ -32,7 +32,6 @@ const AudioPlayer = ({ tracks }) => {
         toNextTrack();
       } else {
         actions.setTrackProgress(audioRef.current.currentTime);
-        
       }
     }, [1000]);
   };
@@ -53,20 +52,20 @@ const AudioPlayer = ({ tracks }) => {
   const toPrevTrack = () => {
     if (state.trackIndex - 1 < 0) {
       // actions.setTrackIndex(tracks.length - 1);
-      state.socket.sendSetTrackIndex({trackIndex:tracks.length - 1})
+      state.socket.sendSetTrackIndex({ trackIndex: tracks.length - 1 });
     } else {
       // actions.setTrackIndex(state.trackIndex - 1);
-      state.socket.sendSetTrackIndex({trackIndex:state.trackIndex - 1})
+      state.socket.sendSetTrackIndex({ trackIndex: state.trackIndex - 1 });
     }
   };
 
   const toNextTrack = () => {
     if (state.trackIndex < tracks.length - 1) {
       // actions.setTrackIndex(state.trackIndex + 1);
-      state.socket.sendSetTrackIndex({trackIndex:state.trackIndex + 1})
+      state.socket.sendSetTrackIndex({ trackIndex: state.trackIndex + 1 });
     } else {
       // actions.setTrackIndex(0);
-      state.socket.sendSetTrackIndex({trackIndex:0})
+      state.socket.sendSetTrackIndex({ trackIndex: 0 });
     }
   };
 
@@ -107,7 +106,7 @@ const AudioPlayer = ({ tracks }) => {
     <div className="audio-player">
       <div className="track-info">
         <img
-          className={`artwork ${state.isPlaying && 'active'}`}
+          className={`artwork ${state.isPlaying && "active"}`}
           src={image}
           alt={`track artwork for ${title} by ${artist}`}
         />
@@ -133,10 +132,9 @@ const AudioPlayer = ({ tracks }) => {
         />
       </div>
       <div className="d-flex justify-content-center">
-        <AddTrack/>
+        <AddTrack />
       </div>
-      
     </div>
   );
 };
-export default AudioPlayer
+export default AudioPlayer;

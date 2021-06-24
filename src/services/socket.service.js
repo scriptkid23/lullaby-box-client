@@ -29,6 +29,18 @@ export class SocketService {
   receiverTrack = (callback) => {
     this.socket.on("RECEIVER_ADD_TRACK", callback);
   };
+  sendEventPlay = (value) => {
+    this.socket.emit("SEND_EVENT_PLAY",value);
+  }
+  receiverEventPlay = (callback) => {
+    this.socket.on("RECEIVER_EVENT_PLAY",callback);
+  }
+  sendSetTrackProgress = (value) => {
+    this.socket.emit("SEND_SET_TRACK_PROGRESS",value);
+  }
+  receiverSetTrackProgress = (callback) => {
+    this.socket.on("RECEIVER_SET_TRACK_PROGRESS",callback);
+  }
   disconnect = () => {
     this.socket.disconnect();
   };
