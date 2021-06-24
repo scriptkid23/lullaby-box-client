@@ -9,7 +9,12 @@ class SocketProvider extends React.Component {
     this.state = {
       socket: null,
       isPlaying: false,
-      tracks: [],
+      tracks: [{
+        title: "Track is Empty",
+        artist:"Unknown",
+        audioSrc: "",
+        image:"https://f4.bcbits.com/img/a3440516125_10.jpg"
+      }],
       trackProgress: 0,
       trackIndex: 0,
     };
@@ -23,17 +28,17 @@ class SocketProvider extends React.Component {
   componentDidMount() {
     const socket = new SocketService();
 
-    this.setState({
-      tracks: [
-        ...this.state.tracks,
-        {
-          title: "To the Moon",
-          artist: "hooligan.",
-          audioSrc: mockup,
-          image: "https://i.ytimg.com/vi/nmKTlmByng0/maxresdefault.jpg",
-        },
-      ],
-    });
+    // this.setState({
+    //   tracks: [
+    //     ...this.state.tracks,
+    //     {
+    //       title: "To the Moon",
+    //       artist: "hooligan.",
+    //       audioSrc: mockup,
+    //       image: "https://i.ytimg.com/vi/nmKTlmByng0/maxresdefault.jpg",
+    //     },
+    //   ],
+    // });
     socket.receiverSetTrackIndex(this.setTrackIndex);
     socket.receiverTrack(this.receiverTrack);
     socket.receiverEventPlay(this.setStateIsPlay);

@@ -1,16 +1,31 @@
 import React from "react";
 
-import "./App.css";
 import AudioPlayer from "../audio/audio.player";
-
+import StartScreen from "../screens/start.screen";
+import HomeScreen from "../screens/home.screen";
 import { SocketContext } from "../context/socket.context";
+import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
+import AuthenticatedGuard from "../guards/authenticated.guard";
 
 function App() {
-  const {state, actions} = React.useContext(SocketContext);
+  const { state, actions } = React.useContext(SocketContext);
   return (
-    <div>
-      {state.tracks.length > 0 && <AudioPlayer tracks={state.tracks} />}
-    </div>
+    <BrowserRouter>
+      {/* {state.tracks.length > 0 && <AudioPlayer tracks={state.tracks} />} */}
+      <Switch>
+        <Route
+          path="/"
+          exact
+          component={(props) => <StartScreen {...props} />}
+        />
+        <AuthenticatedGuard
+          path="/room/:id"
+          exact
+          component={(props) => <HomeScreen {...props} />}
+        />
+        <Redirect to="/" />
+      </Switch>
+    </BrowserRouter>
   );
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, ListGroup } from "react-bootstrap";
 import { SocketContext } from "../context/socket.context";
+import * as FeatherIcon from 'react-feather'
 import Axios from "axios";
 import { baseUrl } from "../constants";
 import _, { filter } from "lodash";
@@ -49,9 +50,14 @@ function AddTrack() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add Track
-      </Button>
+     
+      <a
+        href="#/"
+        onClick={handleShow}
+        className="btn btn-outline-light sidebar-close"
+      >
+        <FeatherIcon.Plus/>
+      </a>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

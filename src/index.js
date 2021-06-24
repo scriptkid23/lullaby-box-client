@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-perfect-scrollbar/dist/css/styles.css';
+// import 'font-awesome/css/font-awesome.min.css';
 import './index.css';
+import './scss/Index.scss'
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import { SocketProvider } from './context/socket.context';
