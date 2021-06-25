@@ -1,30 +1,64 @@
 import React from "react";
-import { SocketService } from "../services/socket.service";
-import mockup from "../assets/mockup.mp3";
 import axios from "axios";
 import { baseUrl } from "../constants";
-import { useQuery } from 'react-query'
+
 const DataContext = React.createContext({});
 
-function DataProvider({children}) {
-    const [data, setData] = React.useState(null);
-    const fetchData = async( ) => {
-      let data = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
-      setData(data);
-    }
- 
-    const isMounted = React.useRef(false);
-    React.useEffect(() => {
-      isMounted.current = true;
-      fetchData();
-      return () => { isMounted.current = false };
-    },[])
+class  DataProvider extends React.Component {
   
+  constructor(){
+    super();
+    this.state = {
+      messages:[],
+      name:"",
+      participants:[],
+      tracks:[],
+    }
+  }
+    fetchData = async() => {
+      let {data} = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
+      this.setState({
+        messages: data.messages,
+        name: data.name,
+        participants: data.participants,
+        tracks:data.tracks,
+      })
+     
+    }
+    componentDidMount(){
+      this.fetchData();
+    }
+    // updateMessage = () => {
+
+    // }
+    // updateParticipant = () => {
+
+    // }
+    // updateTrack = () => {
+
+    // }
+  
+   render(){
+     const value = {
+       state: {
+         messages: this.state.messages,
+         name: this.state.name,
+         participants: this.state.participants,
+         tracks: this.state.tracks,
+       },
+      //  actions: {
+      //   updateMessage: this.updateMessage,
+      //   updateParticipant: this.updateParticipant,
+      //   updateTrack: this.updateTrack,
+      //  }
+     }
     return (
-      <DataContext.Provider value={data}>
-        {children}
+      <DataContext.Provider value={value}>
+        {this.props.children}
       </DataContext.Provider>
     );
+   }
+ 
   }
 
 

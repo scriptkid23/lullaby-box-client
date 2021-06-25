@@ -25,17 +25,13 @@ class ChatProvider extends React.Component {
     state.socket && state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
 
     this.setState({ socket: state.socket });
-    console.log(this.props.data);
-    
   }
-  componentWillUnmount() {
-    this.state.socket && this.state.socket.disconnect();
-  }
+ 
 
   leaveRoom = (value) => {
     console.log("start leave room");
     console.log(value);
-    this.state.socket.leaveRoom(value);
+    this.state.socket && this.state.socket.leaveRoom(value);
   };
   setStateIsLeaveRoom = (value) => {
     console.log("Leave Room");

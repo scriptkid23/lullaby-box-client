@@ -3,7 +3,7 @@ import mockup from "../assets/mockup.mp3";
 import { SocketContext } from "./socket.context";
 const PanelContext = React.createContext({});
 
-class PanelProvider extends React.PureComponent {
+class PanelProvider extends React.Component {
   static contextType = SocketContext;
   constructor() {
     super();
@@ -32,6 +32,7 @@ class PanelProvider extends React.PureComponent {
 
   componentDidMount() {
     const { state, actions } = this.context;
+    console.log(state.socket);
     state.socket && state.socket.receiverSetTrackIndex(this.setTrackIndex);
     state.socket && state.socket.receiverTrack(this.receiverTrack);
     state.socket && state.socket.receiverEventPlay(this.setStateIsPlay);
@@ -39,9 +40,10 @@ class PanelProvider extends React.PureComponent {
     state.socket && state.socket.receiverJoinRoom(this.setStateJoinRoom);
     this.setState({ socket: state.socket });
   }
-  componentWillUnmount() {
-    this.state.socket && this.state.socket.disconnect();
-  }
+  // componentWillUnmount() {
+  //   console.log("disconnected")
+  //   this.state.socket && this.state.socket.disconnect();
+  // }
   setStateJoinRoom = (data) => {
     let index = this.state.members.findIndex((value, index) => {
       return value.userId === data.participant.userId;

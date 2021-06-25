@@ -2,14 +2,21 @@ import React from "react";
 import { useHistory } from "react-router";
 import * as FeatherIcon from 'react-feather'
 import { ChatContext } from "../../context/chat.context";
-export default function ChatHeader() {
+import { baseUrl } from "../../constants";
+import axios from "axios";
+export default function ChatHeader({name}) {
   const history = useHistory();
   const {state, actions} = React.useContext(ChatContext);
-  const logout = () => {
+  const logout = async () => {
     actions.leaveRoom({
       roomId: localStorage.getItem('roomId'),
       userId: localStorage.getItem('userId'),
     });
+  
+    await axios.post(baseUrl+'/room/leave',{
+      roomId: localStorage.getItem('roomId'),
+      userId: localStorage.getItem('userId'),
+    })
     localStorage.clear();
     history.push("/");
   }
@@ -24,7 +31,7 @@ export default function ChatHeader() {
           />
         </figure>
         <div>
-          <h5>{localStorage.getItem('room')}</h5>
+          <h5>{name}</h5>
         </div>
       </div>
       <div className="chat-header-action">
@@ -32,7 +39,7 @@ export default function ChatHeader() {
           <li className="list-inline-item">
             <button
               className="btn btn-outline-light text-success"
-              onClick={logout}
+              onClick={() => logout()}
               id="Tooltip-Voice-Call"
             >
               <FeatherIcon.LogOut />

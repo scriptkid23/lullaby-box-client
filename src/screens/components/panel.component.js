@@ -114,7 +114,7 @@ export default function Panel() {
     };
   }, []);
 
-  console.log(state.members);
+  // console.log(state.members);
   return (
     <div className={`sidebar-group`}>
       <div className="sidebar active">
