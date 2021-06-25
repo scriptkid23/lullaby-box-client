@@ -16,13 +16,7 @@ class PanelProvider extends React.Component {
         {
           name: "Track is Empty",
           artist: "Unknown",
-          url: mockup,
-          image: "https://f4.bcbits.com/img/a3440516125_10.jpg",
-        },
-        {
-          name: "To the Moon",
-          artist: "Unknown",
-          url: mockup,
+          url: "",
           image: "https://f4.bcbits.com/img/a3440516125_10.jpg",
         },
       ],
