@@ -72,7 +72,7 @@ class PanelProvider extends React.Component {
       return value.userId !== data.userId;
     });
     this.setState({
-      members: [...participants],
+      participants: [...participants],
     });
     console.log(data);
   };
