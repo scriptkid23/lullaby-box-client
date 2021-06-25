@@ -203,3 +203,7 @@ input[type="range"] {
 .modal-header, .modal-footer{
   border: none;
 }
+.avatar-active {
+  border: 3px solid #03256C;
+  transition: background 0.2s ease;
+}

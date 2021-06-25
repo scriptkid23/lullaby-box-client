@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 import { SocketContext } from "../../context/socket.context";
 import axios from "axios";
 import { baseUrl } from "../../constants";
+import SelectAvatar from "./select-avatar.component";
 export default function JoinRoomComponent() {
   const [show, setShow] = useState(false);
   const {actions} = React.useContext(SocketContext);
@@ -16,20 +17,23 @@ export default function JoinRoomComponent() {
   const handleShow = () => setShow(true);
   
   const onSubmit = (data) => {
-    const userId  =uuidv4();
-    axios.post(baseUrl+'/room/join',{
-      roomId: data.roomId,
-      participant:{
-        userId: userId,
-        name: data.name,
-        avatar: data.avatar,
-      }
-    })
-    localStorage.setItem("userId",userId);
-    localStorage.setItem("name", data.name);
-    localStorage.setItem("avatar", data.avatar);
-    localStorage.setItem("roomId",data.roomId);
-    history.push("/room/"+data.roomId);
+    if(localStorage.getItem("avatar").length > 0){
+      const userId  =uuidv4();
+      axios.post(baseUrl+'/room/join',{
+        roomId: data.roomId,
+        participant:{
+          userId: userId,
+          name: data.name,
+          avatar: localStorage.getItem("avatar"),
+        }
+      })
+      localStorage.setItem("userId",userId);
+      localStorage.setItem("name", data.name);
+      // localStorage.setItem("avatar", data.avatar);
+      localStorage.setItem("roomId",data.roomId);
+      history.push("/room/"+data.roomId);
+    }
+  
   };
   return (
     <>
@@ -66,11 +70,7 @@ export default function JoinRoomComponent() {
             </Form.Group>
             <Form.Group>
               <Form.Label>Avatar</Form.Label>
-              <Form.Control
-                {...register("avatar")}
-                type="text"
-                placeholder="Select Avatar"
-              />
+              <SelectAvatar/>
             </Form.Group>
           </Form>
         </Modal.Body>

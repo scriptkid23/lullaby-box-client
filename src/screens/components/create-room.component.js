@@ -8,6 +8,7 @@ import { useHistory } from "react-router";
 import { SocketContext } from "../../context/socket.context";
 import Axios from "axios";
 import { baseUrl } from "../../constants";
+import SelectAvatar from "./select-avatar.component";
 export default function CreateRoomComponent() {
   const [show, setShow] = useState(false);
   const { register, handleSubmit } = useForm();
@@ -29,26 +30,28 @@ export default function CreateRoomComponent() {
     /* Alert the copied text */
   };
   const onSubmit = async (data) => {
-    let userId = uuidv4();
-    let result = await Axios.post(baseUrl + "/room/create", {
-      roomId: data.roomId,
-      name: data.room,
-    });
-    if (result) {
-      Axios.post(baseUrl+'/room/join',{
+    if (localStorage.getItem("avatar").length > 0) {
+      let userId = uuidv4();
+      let result = await Axios.post(baseUrl + "/room/create", {
         roomId: data.roomId,
-        participant:{
-          userId: userId,
-          name: data.name,
-          avatar: data.avatar,
-        }
-      })
-      localStorage.setItem("userId", userId);
-      localStorage.setItem("name", data.name);
-      localStorage.setItem("room", data.room);
-      localStorage.setItem("avatar", data.avatar);
-      localStorage.setItem("roomId", data.roomId);
-      history.push("/room/" + data.roomId);
+        name: data.room,
+      });
+      if (result) {
+        Axios.post(baseUrl + "/room/join", {
+          roomId: data.roomId,
+          participant: {
+            userId: userId,
+            name: data.name,
+            avatar: localStorage.getItem("avatar"),
+          },
+        });
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("name", data.name);
+        localStorage.setItem("room", data.room);
+        // localStorage.setItem("avatar", data.avatar);
+        localStorage.setItem("roomId", data.roomId);
+        history.push("/room/" + data.roomId);
+      }
     }
   };
   return (
@@ -110,11 +113,7 @@ export default function CreateRoomComponent() {
 
             <Form.Group>
               <Form.Label>Avatar</Form.Label>
-              <Form.Control
-                {...register("avatar")}
-                type="text"
-                placeholder="Select Avatar"
-              />
+              <SelectAvatar />
             </Form.Group>
           </Form>
         </Modal.Body>
