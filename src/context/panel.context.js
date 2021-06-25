@@ -38,31 +38,29 @@ class PanelProvider extends React.PureComponent {
     state.socket && state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
     state.socket && state.socket.receiverJoinRoom(this.setStateJoinRoom);
     this.setState({ socket: state.socket });
-    console.log(this.props.data);
+  }
+  componentWillUnmount() {
+    this.state.socket && this.state.socket.disconnect();
   }
   setStateJoinRoom = (data) => {
-    let index = this.state.members.findIndex((value,index) => {
+    let index = this.state.members.findIndex((value, index) => {
       return value.userId === data.participant.userId;
-    })
-    if(index !== -1){
+    });
+    if (index !== -1) {
       this.setState({
-        members:[
-          ...this.state.members,
-          data.participant,
-        ]
-      })
+        members: [...this.state.members, data.participant],
+      });
     }
-  
-  }
+  };
   setStateIsLeaveRoom = (data) => {
     let members = this.state.members.filter((value, index) => {
       return value.userId !== data.userId;
-    })
+    });
     this.setState({
       members: members,
-    })
+    });
     console.log(data);
-  }
+  };
   setIsPlaying = (flag) => {
     console.log("Set is playing");
     this.state.socket.sendEventPlay({
@@ -77,7 +75,7 @@ class PanelProvider extends React.PureComponent {
   setTrackProgress = (value) => {
     this.setState({ trackProgress: value });
   };
-  
+
   setTrackIndex = (index) => {
     console.log(index);
     this.setState({ trackIndex: index.trackIndex });

@@ -2,6 +2,8 @@ import React from "react";
 import { SocketService } from "../services/socket.service";
 import mockup from "../assets/mockup.mp3";
 import { SocketContext } from "./socket.context";
+import axios from "axios";
+import { baseUrl } from "../constants";
 const ChatContext = React.createContext({});
 
 class ChatProvider extends React.Component {
@@ -10,9 +12,8 @@ class ChatProvider extends React.Component {
     super();
     this.state = {
       socket: null,
-      messages:[],
-      room:"",
-
+      messages: [],
+      room: "",
     };
   }
   // receiverMessage = (data) => {
@@ -21,13 +22,16 @@ class ChatProvider extends React.Component {
   componentDidMount() {
     const { state, actions } = this.context;
 
-   
     state.socket && state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
 
     this.setState({ socket: state.socket });
     console.log(this.props.data);
+    
   }
- 
+  componentWillUnmount() {
+    this.state.socket && this.state.socket.disconnect();
+  }
+
   leaveRoom = (value) => {
     console.log("start leave room");
     console.log(value);

@@ -6,6 +6,7 @@ import Chat from "./components/chat.component";
 import Panel from "./components/panel.component";
 import axios from "axios";
 import { baseUrl } from "../constants";
+import { DataProvider } from "../context/data.context";
 
 export default class HomeScreen extends React.PureComponent {
   static contextType = SocketContext;
@@ -13,11 +14,12 @@ export default class HomeScreen extends React.PureComponent {
     super();
     this.state = {
       data: {},
+      socket:null,
       actions: null,
     };
   }
   async componentDidMount() {
-    const { actions } = this.context;
+    const { state, actions } = this.context;
     actions.joinRoom({
       roomId: localStorage.getItem("roomId"),
       reconnect: true,
@@ -27,33 +29,29 @@ export default class HomeScreen extends React.PureComponent {
         avatar: localStorage.getItem("avatar"),
       },
     });
-    this.setState({ actions: actions });
-    const { data } = await axios.get(
-      baseUrl + "/room/" + localStorage.getItem("roomId")
-    );
-    if (data) {
-      console.log(data);
-      this.setState(data);
-    }
+    this.setState({ socket: state.socket, actions: actions });
+    // axios.get(baseUrl+'/room/'+localStorage.getItem('roomId')).then(
+    //   (value) => {
+    //     this.setState({
+    //       data: value.data,
+    //     })
+    //   }
+    // )
   }
   componentWillUnmount() {
-    this.state.actions &&
-      this.state.actions.leaveRoom({
-        roomId: localStorage.getItem("roomId"),
-        userId: localStorage.getItem("userId"),
-      });
+    this.state.socket && this.state.socket.disconnect();
   }
   render() {
-    console.log("home render");
+    // console.log(this.state.data);
     return (
       <div className="layout">
         <div className="content">
           <ChatProvider>
-            <Chat  data={this.state.data}/>
+            <Chat />
           </ChatProvider>
 
           <PanelProvider>
-            <Panel  data={this.state.data}/>
+            <Panel />
           </PanelProvider>
         </div>
       </div>

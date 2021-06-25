@@ -1,6 +1,8 @@
 import React from "react";
 import { SocketService } from "../services/socket.service";
 import mockup from "../assets/mockup.mp3";
+import axios from "axios";
+import { baseUrl } from "../constants";
 const SocketContext = React.createContext({});
 
 class SocketProvider extends React.Component {
@@ -8,6 +10,7 @@ class SocketProvider extends React.Component {
     super();
     this.state = {
       socket: null,
+      data: null,
       // isPlaying: false,
       // tracks: [
       //   {
@@ -28,15 +31,17 @@ class SocketProvider extends React.Component {
   componentWillUnmount() {
     this.state.socket.disconnect();
   }
-  componentDidMount() {
+  async componentDidMount() {
     const socket = new SocketService();
-
+   
     // socket.receiverSetTrackIndex(this.setTrackIndex);
     // socket.receiverTrack(this.receiverTrack);
     // socket.receiverEventPlay(this.setStateIsPlay);
     // socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
 
     this.setState({ socket: socket });
+  
+    
   }
   // setIsPlaying = async (flag) => {
   //   console.log("Set is playing");
@@ -53,13 +58,13 @@ class SocketProvider extends React.Component {
   //   this.setState({ trackProgress: value });
   // };
   joinRoom = (value) => {
-    console.log("start join room")
+    console.log("start join room");
     this.state.socket && this.state.socket.joinRoom(value);
   };
   leaveRoom = (value) => {
-    console.log("start leave room")
-    console.log(value)
-    this.state.socket.leaveRoom(value);
+    console.log("start leave room");
+    console.log(value);
+    this.state.socket && this.state.socket.leaveRoom(value);
   };
   // setStateIsLeaveRoom = (value) => {
   //   console.log("Leave Room")
@@ -86,6 +91,7 @@ class SocketProvider extends React.Component {
         // isPlaying: this.state.isPlaying,
         // tracks: this.state.tracks,
         socket: this.state.socket,
+        data: this.state.data,
         // trackIndex: this.state.trackIndex,
       },
       actions: {
