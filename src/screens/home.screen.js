@@ -1,30 +1,42 @@
 import React from "react";
+import { PanelProvider } from "../context/panel.context";
 import { SocketContext } from "../context/socket.context";
 
 import Chat from "./components/chat.component";
 import Panel from "./panel.screen";
 
-export default function HomeScreen() {
-  const {state, actions} = React.useContext(SocketContext);
-  React.useEffect(() => {
-    
+export default class HomeScreen extends React.PureComponent {
+  static contextType = SocketContext;
+  componentDidMount() {
+    const { actions } = this.context;
     actions.joinRoom({
-      roomId: localStorage.getItem('roomId'),
+      roomId: localStorage.getItem("roomId"),
       reconnect: true,
       participant: {
-        userId: localStorage.getItem('userId'),
-        name: localStorage.getItem('name'),
-        avatar: localStorage.getItem('avatar'),
+        userId: localStorage.getItem("userId"),
+        name: localStorage.getItem("name"),
+        avatar: localStorage.getItem("avatar"),
       },
-    })
-    
-  },[actions])
-  return (
-    <div className="layout">
-      <div className="content">
-        <Chat />
-        <Panel tracks={state.tracks}/>
+    });
+  }
+  componentWillUnmount() {
+    const { actions } = this.context;
+    actions.leaveRoom({
+      roomId: localStorage.getItem("roomId"),
+      userId: localStorage.getItem("userId"),
+    });
+  }
+  render() {
+    return (
+      <div className="layout">
+        <div className="content">
+          <Chat />
+          <PanelProvider>
+              <Panel />
+          </PanelProvider>
+         
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }

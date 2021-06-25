@@ -3,12 +3,13 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import AudioControls from "../audio/audio.control";
 import AudioPlayer from "../audio/audio.player";
 import { Badge} from "reactstrap";
-import { SocketContext } from "../context/socket.context";
+
 import AddTrack from "../track/add.track";
-export default function Panel({ tracks }) {
-  const { state, actions } = React.useContext(SocketContext);
-  const { title, artist, image, audioSrc } = tracks[state.trackIndex];
-  const [isPlaying, setIsPlaying] = useState(false);
+import { PanelContext } from "../context/panel.context";
+export default function Panel() {
+  console.log("panel render");
+  const { state, actions } = React.useContext(PanelContext);
+  const { title, artist, image, audioSrc } = state.tracks[state.trackIndex];
   const [trackProgress, setTrackProgress] = useState(0);
   const audioRef = useRef(new Audio(audioSrc));
   const intervalRef = useRef();
@@ -42,7 +43,7 @@ export default function Panel({ tracks }) {
   const onScrubEnd = () => {
     // If not already playing, start
     if (!state.isPlaying) {
-      setIsPlaying(true);
+      actions.setIsPlaying(true);
     }
     startTimer();
   };
@@ -50,7 +51,7 @@ export default function Panel({ tracks }) {
   const toPrevTrack = () => {
     if (state.trackIndex - 1 < 0) {
       // actions.setTrackIndex(tracks.length - 1);
-      state.socket.sendSetTrackIndex({ trackIndex: tracks.length - 1 });
+      state.socket.sendSetTrackIndex({ trackIndex: state.tracks.length - 1 });
     } else {
       // actions.setTrackIndex(state.trackIndex - 1);
       state.socket.sendSetTrackIndex({ trackIndex: state.trackIndex - 1 });
@@ -58,7 +59,7 @@ export default function Panel({ tracks }) {
   };
 
   const toNextTrack = () => {
-    if (state.trackIndex < tracks.length - 1) {
+    if (state.trackIndex < state.tracks.length - 1) {
       // actions.setTrackIndex(state.trackIndex + 1);
       state.socket.sendSetTrackIndex({ trackIndex: state.trackIndex + 1 });
     } else {
@@ -85,7 +86,7 @@ export default function Panel({ tracks }) {
 
     if (isReady.current) {
       audioRef.current.play();
-      setIsPlaying(true);
+      actions.setIsPlaying(true);
       startTimer();
     } else {
       // Set the isReady ref as true for the next pass
@@ -101,7 +102,7 @@ export default function Panel({ tracks }) {
     };
   }, []);
 
-  console.log(tracks);
+  console.log(state.tracks);
   return (
     <div className={`sidebar-group`}>
       <div className="sidebar active">
@@ -120,7 +121,7 @@ export default function Panel({ tracks }) {
             <div className="track-info">
               <img
                 className={`artwork ${
-                  state.isPlaying || (audioSrc.length === 0 && "active")
+                  state.isPlaying && "active"
                 }`}
                 src={image}
                 alt={`track artwork for ${title} by ${artist}`}

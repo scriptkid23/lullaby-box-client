@@ -21,7 +21,7 @@ function App() {
         <AuthenticatedGuard
           path="/room/:id"
           exact
-          component={(props) => <HomeScreen {...props} />}
+          component={(props) => <HomeScreen {...props}/>}
         />
         <Redirect to="/" />
       </Switch>
