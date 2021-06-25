@@ -1,5 +1,5 @@
 import React from "react";
-import { SocketService } from "../services/socket.service";
+import SocketService from "../services/socket.service";
 import mockup from "../assets/mockup.mp3";
 import axios from "axios";
 import { baseUrl } from "../constants";
@@ -9,17 +9,14 @@ class SocketProvider extends React.Component {
   constructor() {
     super();
     this.state = {
-      socket: null,
+      socket: SocketService,
     };
   }
   // componentWillUnmount() {
   //   console.log("disconnect");
   //   this.state.socket.disconnect();
   // }
-  async componentDidMount() {
-    const socket = new SocketService();
-    this.setState({ socket: socket });
-  }
+ 
 
   joinRoom = (value) => {
     console.log("start join room");

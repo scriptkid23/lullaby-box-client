@@ -8,7 +8,7 @@ const baseUrl =
   !process.env.NODE_ENV || process.env.NODE_ENV === "development"
     ? ENVIRONMENTS.DEVELOPMENT
     : ENVIRONMENTS.PRODUCTION;
-export class SocketService {
+class SocketService {
   socket;
   constructor() {
     this.socket = SocketIOClient(baseUrl);
@@ -55,3 +55,4 @@ export class SocketService {
     this.socket.disconnect();
   };
 }
+export default new SocketService();
