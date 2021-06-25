@@ -1,85 +1,40 @@
 import React from "react";
-import { SocketService } from "../services/socket.service";
-import mockup from '../assets/mockup.mp3'
+import SocketService from "../services/socket.service";
+import mockup from "../assets/mockup.mp3";
+import axios from "axios";
+import { baseUrl } from "../constants";
 const SocketContext = React.createContext({});
 
 class SocketProvider extends React.Component {
   constructor() {
     super();
     this.state = {
-      socket: null,
-      isPlaying: false,
-      tracks:[],
-      trackProgress: 0,
-      trackIndex:0,
+      socket: SocketService,
     };
   }
-  receiverMessage = (data) => {
-    this.setState({trackProgress: data.trackProgress});
+ 
+  joinRoom = (value) => {
+    console.log("start join room");
+    this.state.socket && this.state.socket.joinRoom(value);
   };
-  componentWillUnmount() {
-    this.state.socket.disconnect();
-  }
-  componentDidMount() {
-    const socket = new SocketService();
-
-    this.setState({
-      tracks:[
-        ...this.state.tracks,
-        {
-          title: "To the Moon",
-          artist: "hooligan.",
-          audioSrc: mockup,
-          image: "https://i.ytimg.com/vi/nmKTlmByng0/maxresdefault.jpg",
-        },
-      ]
-    })
-    socket.receiverSetTrackIndex(this.setTrackIndex);
-    socket.receiverTrack(this.receiverTrack);
-    this.setState({ socket: socket });
-  }
-  setIsPlaying = (flag) => {
-    
-    this.setState({isPlaying: flag});
-  }
-  setTrackProgress = (value) => {
-    this.setState({trackProgress: value});
-  }
-  sendMessage = (data) => {
-    this.setState({isPlaying:data.flag});
+  leaveRoom = (value) => {
+    console.log("start leave room");
+    console.log(value);
+    this.state.socket && this.state.socket.leaveRoom(value);
   };
-  setTrackIndex = (index ) => {
-    this.setState({trackIndex: index.trackIndex})
-  }
-  addTrack = (value) => {
-    this.state.socket.sendAddTrack(value);
-  }
-  receiverTrack = (value) => {
-    this.setState({
-      tracks:[
-        ...this.state.tracks,
-        ...value,
-      ]
-    })
-  }
 
   render() {
+    console.log("socket context render");
     const value = {
-          state:{ 
-            isPlaying:this.state.isPlaying,
-            tracks: this.state.tracks,
-            trackProgress: this.state.trackProgress,
-            socket: this.state.socket,
-            trackIndex: this.state.trackIndex
-          },
-          actions:{
-              sendMessage:this.sendMessage,
-              setIsPlaying: this.setIsPlaying,
-              setTrackProgress: this.setTrackProgress,
-              setTrackIndex: this.setTrackIndex,
-              addTrack: this.addTrack,
-          }
-      }
+      state: {
+        socket: this.state.socket,
+        data: this.state.data,
+      },
+      actions: {
+        joinRoom: this.joinRoom,
+        leaveRoom: this.leaveRoom,
+      },
+    };
     return (
       <SocketContext.Provider value={value}>
         {this.props.children}
@@ -89,4 +44,3 @@ class SocketProvider extends React.Component {
 }
 
 export { SocketContext, SocketProvider };
- 

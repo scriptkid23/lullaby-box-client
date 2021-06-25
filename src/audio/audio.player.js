@@ -6,18 +6,18 @@ import AddTrack from "../track/add.track";
 const AudioPlayer = ({ tracks }) => {
   // const [trackIndex, setTrackIndex] = useState(0);
   // const [trackProgress, setTrackProgress] = useState(0);
- 
-  const {state, actions} = React.useContext(SocketContext);
-  
-  const { title, artist , image, audioSrc } = tracks[state.trackIndex];
 
+  const { state, actions } = React.useContext(SocketContext);
+
+  const { title, artist, image, audioSrc } = tracks[state.trackIndex];
+  const [trackProgress, setTrackProgress] = useState(0);
   const audioRef = useRef(new Audio(audioSrc));
   const intervalRef = useRef();
   const isReady = useRef(false);
 
   const { duration } = audioRef.current;
   const currentPercentage = duration
-    ? `${(state.trackProgress / duration) * 100}%`
+    ? `${(trackProgress / duration) * 100}%`
     : "0%";
   const trackStyling = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #fff), color-stop(${currentPercentage}, #777))
@@ -31,8 +31,7 @@ const AudioPlayer = ({ tracks }) => {
       if (audioRef.current.ended) {
         toNextTrack();
       } else {
-        actions.setTrackProgress(audioRef.current.currentTime);
-        
+        setTrackProgress(audioRef.current.currentTime);
       }
     }, [1000]);
   };
@@ -40,7 +39,7 @@ const AudioPlayer = ({ tracks }) => {
     // Clear any timers already running
     clearInterval(intervalRef.current);
     audioRef.current.currentTime = value;
-    actions.setTrackProgress(audioRef.current.currentTime);
+    setTrackProgress(audioRef.current.currentTime);
   };
   const onScrubEnd = () => {
     // If not already playing, start
@@ -53,20 +52,20 @@ const AudioPlayer = ({ tracks }) => {
   const toPrevTrack = () => {
     if (state.trackIndex - 1 < 0) {
       // actions.setTrackIndex(tracks.length - 1);
-      state.socket.sendSetTrackIndex({trackIndex:tracks.length - 1})
+      state.socket.sendSetTrackIndex({ trackIndex: tracks.length - 1 });
     } else {
       // actions.setTrackIndex(state.trackIndex - 1);
-      state.socket.sendSetTrackIndex({trackIndex:state.trackIndex - 1})
+      state.socket.sendSetTrackIndex({ trackIndex: state.trackIndex - 1 });
     }
   };
 
   const toNextTrack = () => {
     if (state.trackIndex < tracks.length - 1) {
       // actions.setTrackIndex(state.trackIndex + 1);
-      state.socket.sendSetTrackIndex({trackIndex:state.trackIndex + 1})
+      state.socket.sendSetTrackIndex({ trackIndex: state.trackIndex + 1 });
     } else {
       // actions.setTrackIndex(0);
-      state.socket.sendSetTrackIndex({trackIndex:0})
+      state.socket.sendSetTrackIndex({ trackIndex: 0 });
     }
   };
 
@@ -84,7 +83,7 @@ const AudioPlayer = ({ tracks }) => {
     audioRef.current.pause();
 
     audioRef.current = new Audio(audioSrc);
-    actions.setTrackProgress(audioRef.current.currentTime);
+    setTrackProgress(audioRef.current.currentTime);
 
     if (isReady.current) {
       audioRef.current.play();
@@ -107,7 +106,7 @@ const AudioPlayer = ({ tracks }) => {
     <div className="audio-player">
       <div className="track-info">
         <img
-          className={`artwork ${state.isPlaying && 'active'}`}
+          className={`artwork ${state.isPlaying && "active"}`}
           src={image}
           alt={`track artwork for ${title} by ${artist}`}
         />
@@ -121,7 +120,7 @@ const AudioPlayer = ({ tracks }) => {
         />
         <input
           type="range"
-          value={state.trackProgress}
+          value={trackProgress}
           step="1"
           min="0"
           max={duration ? duration : `${duration}`}
@@ -133,10 +132,9 @@ const AudioPlayer = ({ tracks }) => {
         />
       </div>
       <div className="d-flex justify-content-center">
-        <AddTrack/>
+        <AddTrack />
       </div>
-      
     </div>
   );
 };
-export default AudioPlayer
+export default AudioPlayer;

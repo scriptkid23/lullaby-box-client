@@ -1,18 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-import App from './app/App';
-import reportWebVitals from './reportWebVitals';
-import { SocketProvider } from './context/socket.context';
+import React from "react";
+import ReactDOM from "react-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-perfect-scrollbar/dist/css/styles.css";
+// import 'font-awesome/css/font-awesome.min.css';
+import "./index.css";
+import "./scss/Index.scss";
+import App from "./app/App";
+import reportWebVitals from "./reportWebVitals";
+import { SocketProvider } from "./context/socket.context";
 
 ReactDOM.render(
   <React.StrictMode>
     <SocketProvider>
-       <App />
+      <App />
     </SocketProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

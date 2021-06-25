@@ -7,8 +7,8 @@ export default function AuthenticatedGuard(props) {
         {...rest}
         render={
             props => {
-                if(!isAuthenticated && !localStorage.getItem("token")){
-                    return <Redirect to="/auth/login"/>
+                if(!localStorage.getItem("roomId")){
+                    return <Redirect to="/"/>
                 }
                 return <Component {...props}/>
             }
