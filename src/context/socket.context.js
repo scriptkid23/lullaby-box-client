@@ -12,12 +12,7 @@ class SocketProvider extends React.Component {
       socket: SocketService,
     };
   }
-  // componentWillUnmount() {
-  //   console.log("disconnect");
-  //   this.state.socket.disconnect();
-  // }
  
-
   joinRoom = (value) => {
     console.log("start join room");
     this.state.socket && this.state.socket.joinRoom(value);

@@ -6,9 +6,11 @@ import { Badge } from "reactstrap";
 
 import AddTrack from "../../track/add.track";
 import { PanelContext } from "../../context/panel.context";
+import { DataContext } from "../../context/data.context";
 export default function Panel() {
   console.log("panel render");
   const { state, actions } = React.useContext(PanelContext);
+  const dataContext = React.useContext(DataContext);
   const { title, artist, image, audioSrc } = state.tracks[state.trackIndex];
   const [trackProgress, setTrackProgress] = useState(0);
   const audioRef = useRef(new Audio(audioSrc));
@@ -114,7 +116,7 @@ export default function Panel() {
     };
   }, []);
 
-  // console.log(state.members);
+  console.log(dataContext);
   return (
     <div className={`sidebar-group`}>
       <div className="sidebar active">
@@ -158,7 +160,7 @@ export default function Panel() {
               />
             </div>
             <div className="d-flex flex-wrap justify-content-center">
-              {state.members && state.members.map((value, index)=> {
+              {dataContext && dataContext.state.participants.map((value, index)=> {
                 return(
                 <Badge className="m-2" color="primary" key={value.userId}>
                   {value.name}

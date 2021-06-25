@@ -1,25 +1,20 @@
 import React from "react";
 import { useHistory } from "react-router";
-import * as FeatherIcon from 'react-feather'
+import * as FeatherIcon from "react-feather";
 import { ChatContext } from "../../context/chat.context";
 import { baseUrl } from "../../constants";
 import axios from "axios";
-export default function ChatHeader({name}) {
+export default function ChatHeader({ name }) {
   const history = useHistory();
-  const {state, actions} = React.useContext(ChatContext);
+  const { state, actions } = React.useContext(ChatContext);
   const logout = async () => {
     actions.leaveRoom({
-      roomId: localStorage.getItem('roomId'),
-      userId: localStorage.getItem('userId'),
+      roomId: localStorage.getItem("roomId"),
+      userId: localStorage.getItem("userId"),
     });
-  
-    await axios.post(baseUrl+'/room/leave',{
-      roomId: localStorage.getItem('roomId'),
-      userId: localStorage.getItem('userId'),
-    })
     localStorage.clear();
     history.push("/");
-  }
+  };
   return (
     <div className="chat-header">
       <div className="chat-header-user">
