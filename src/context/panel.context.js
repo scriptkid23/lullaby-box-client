@@ -1,5 +1,4 @@
 import React from "react";
-import { SocketService } from "../services/socket.service";
 import mockup from "../assets/mockup.mp3";
 import { SocketContext } from "./socket.context";
 const PanelContext = React.createContext({});
@@ -18,6 +17,12 @@ class PanelProvider extends React.Component {
           audioSrc: mockup,
           image: "https://f4.bcbits.com/img/a3440516125_10.jpg",
         },
+        {
+          title: "To the Moon",
+          artist: "Unknown",
+          audioSrc: mockup,
+          image: "https://f4.bcbits.com/img/a3440516125_10.jpg",
+        },
       ],
       trackProgress: 0,
       trackIndex: 0,
@@ -30,13 +35,16 @@ class PanelProvider extends React.Component {
     state.socket && state.socket.receiverSetTrackIndex(this.setTrackIndex);
     state.socket && state.socket.receiverTrack(this.receiverTrack);
     state.socket && state.socket.receiverEventPlay(this.setStateIsPlay);
-    // state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
-
+    state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
+    
     this.setState({ socket: state.socket });
   }
-  setIsPlaying = async (flag) => {
+  setStateIsLeaveRoom = (value) => {
+    console.log(value);
+  }
+  setIsPlaying = (flag) => {
     console.log("Set is playing");
-    await this.state.socket.sendEventPlay({
+    this.state.socket.sendEventPlay({
       roomId: localStorage.getItem("roomId"),
       flag: flag,
     });
@@ -48,8 +56,9 @@ class PanelProvider extends React.Component {
   setTrackProgress = (value) => {
     this.setState({ trackProgress: value });
   };
-
+  
   setTrackIndex = (index) => {
+    console.log(index);
     this.setState({ trackIndex: index.trackIndex });
   };
   addTrack = (value) => {
@@ -67,6 +76,7 @@ class PanelProvider extends React.Component {
         isPlaying: this.state.isPlaying,
         tracks: this.state.tracks,
         trackIndex: this.state.trackIndex,
+        socket: this.state.socket,
       },
       actions: {
         setIsPlaying: this.setIsPlaying,

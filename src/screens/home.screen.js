@@ -1,7 +1,7 @@
 import React from "react";
 import { PanelProvider } from "../context/panel.context";
 import { SocketContext } from "../context/socket.context";
-
+import { ChatProvider } from "../context/chat.context";
 import Chat from "./components/chat.component";
 import Panel from "./panel.screen";
 
@@ -30,11 +30,13 @@ export default class HomeScreen extends React.PureComponent {
     return (
       <div className="layout">
         <div className="content">
-          <Chat />
+          <ChatProvider>
+            <Chat />
+          </ChatProvider>
+
           <PanelProvider>
-              <Panel />
+            <Panel />
           </PanelProvider>
-         
         </div>
       </div>
     );

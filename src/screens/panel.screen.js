@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import AudioControls from "../audio/audio.control";
 import AudioPlayer from "../audio/audio.player";
-import { Badge} from "reactstrap";
+import { Badge } from "reactstrap";
 
 import AddTrack from "../track/add.track";
 import { PanelContext } from "../context/panel.context";
@@ -51,20 +51,32 @@ export default function Panel() {
   const toPrevTrack = () => {
     if (state.trackIndex - 1 < 0) {
       // actions.setTrackIndex(tracks.length - 1);
-      state.socket.sendSetTrackIndex({ trackIndex: state.tracks.length - 1 });
+      state.socket.sendSetTrackIndex({
+        roomId: localStorage.getItem("roomId"),
+        trackIndex: state.tracks.length - 1,
+      });
     } else {
       // actions.setTrackIndex(state.trackIndex - 1);
-      state.socket.sendSetTrackIndex({ trackIndex: state.trackIndex - 1 });
+      state.socket.sendSetTrackIndex({
+        roomId: localStorage.getItem("roomId"),
+        trackIndex: state.trackIndex - 1,
+      });
     }
   };
 
   const toNextTrack = () => {
     if (state.trackIndex < state.tracks.length - 1) {
       // actions.setTrackIndex(state.trackIndex + 1);
-      state.socket.sendSetTrackIndex({ trackIndex: state.trackIndex + 1 });
+      state.socket.sendSetTrackIndex({
+        roomId: localStorage.getItem("roomId"),
+        trackIndex: state.trackIndex + 1,
+      });
     } else {
       // actions.setTrackIndex(0);
-      state.socket.sendSetTrackIndex({ trackIndex: 0 });
+      state.socket.sendSetTrackIndex({
+        roomId: localStorage.getItem("roomId"),
+        trackIndex: 0,
+      });
     }
   };
 
@@ -120,9 +132,7 @@ export default function Panel() {
           <PerfectScrollbar>
             <div className="track-info">
               <img
-                className={`artwork ${
-                  state.isPlaying && "active"
-                }`}
+                className={`artwork ${state.isPlaying && "active"}`}
                 src={image}
                 alt={`track artwork for ${title} by ${artist}`}
               />
@@ -148,12 +158,13 @@ export default function Panel() {
               />
             </div>
             <div className="d-flex flex-wrap justify-content-center">
-            <Badge className="m-2" color="primary">Sieu nhan nhen</Badge>
-            <Badge className="m-2" color="primary">Sieu nhan nhen</Badge>
-            
-           
+              <Badge className="m-2" color="primary">
+                Sieu nhan nhen
+              </Badge>
+              <Badge className="m-2" color="primary">
+                Sieu nhan nhen
+              </Badge>
             </div>
-           
           </PerfectScrollbar>
         </div>
       </div>

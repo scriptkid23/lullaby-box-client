@@ -1,9 +1,15 @@
 import React from "react";
 import { useHistory } from "react-router";
 import * as FeatherIcon from 'react-feather'
+import { ChatContext } from "../../context/chat.context";
 export default function ChatHeader() {
   const history = useHistory();
+  const {state, actions} = React.useContext(ChatContext);
   const logout = () => {
+    actions.leaveRoom({
+      roomId: localStorage.getItem('roomId'),
+      userId: localStorage.getItem('userId'),
+    });
     localStorage.clear();
     history.push("/");
   }

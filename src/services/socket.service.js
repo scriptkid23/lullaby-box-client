@@ -14,6 +14,7 @@ export class SocketService {
     this.socket = SocketIOClient(baseUrl);
   }
   sendSetTrackIndex = (value) => {
+    console.log(value);
     this.socket.emit("SEND_SET_TRACK_INDEX", value);
   };
   receiverSetTrackIndex = (callback) => {
@@ -31,12 +32,12 @@ export class SocketService {
   receiverEventPlay = (callback) => {
     this.socket.on("RECEIVER_EVENT_PLAY", callback);
   };
-  sendSetTrackProgress = (value) => {
-    this.socket.emit("SEND_SET_TRACK_PROGRESS", value);
-  };
-  receiverSetTrackProgress = (callback) => {
-    this.socket.on("RECEIVER_SET_TRACK_PROGRESS", callback);
-  };
+  // sendSetTrackProgress = (value) => {
+  //   this.socket.emit("SEND_SET_TRACK_PROGRESS", value);
+  // };
+  // receiverSetTrackProgress = (callback) => {
+  //   this.socket.on("RECEIVER_SET_TRACK_PROGRESS", callback);
+  // };
   joinRoom = (value) => {
     this.socket.emit("JOIN_ROOM", value);
   };
