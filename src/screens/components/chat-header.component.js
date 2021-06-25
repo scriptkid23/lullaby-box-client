@@ -4,9 +4,10 @@ import * as FeatherIcon from "react-feather";
 import { ChatContext } from "../../context/chat.context";
 import { baseUrl } from "../../constants";
 import axios from "axios";
-export default function ChatHeader({room}) {
+export default function ChatHeader({ room }) {
   const history = useHistory();
   const { state, actions } = React.useContext(ChatContext);
+  const { mode, setMode } = React.useState(false);
   const logout = async () => {
     actions.leaveRoom({
       roomId: localStorage.getItem("roomId"),
@@ -14,6 +15,9 @@ export default function ChatHeader({room}) {
     });
     localStorage.clear();
     history.push("/");
+  };
+  const setTheme = () => {
+      document.body.classList.toggle('dark')
   };
   return (
     <div className="chat-header">
@@ -31,6 +35,15 @@ export default function ChatHeader({room}) {
       </div>
       <div className="chat-header-action">
         <ul className="list-inline">
+          <li className="list-inline-item">
+            <button
+              className="btn btn-outline-light text-success"
+              onClick={setTheme}
+              id="Tooltip-Voice-Call"
+            >
+              <FeatherIcon.Moon />
+            </button>
+          </li>
           <li className="list-inline-item">
             <button
               className="btn btn-outline-light text-success"
