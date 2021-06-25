@@ -93,7 +93,7 @@ export default function CreateRoomComponent() {
               <InputGroup>
                 <Form.Control
                   id="roomId"
-                  readonly="readonly"
+                  readOnly
                   {...register("roomId")}
                   type="text"
                   defaultValue={uuidv4()}

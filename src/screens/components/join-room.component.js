@@ -4,18 +4,30 @@ import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
 import { useHistory } from "react-router";
+import { SocketContext } from "../../context/socket.context";
 export default function JoinRoomComponent() {
   const [show, setShow] = useState(false);
+  const {actions} = React.useContext(SocketContext);
   const { register, handleSubmit } = useForm();
   const history = useHistory();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   
   const onSubmit = (data) => {
-    localStorage.setItem("userId",uuidv4());
-    localStorage.setItem("user", data.name);
+    const userId  =uuidv4();
+    localStorage.setItem("userId",userId);
+    localStorage.setItem("name", data.name);
     localStorage.setItem("avatar", data.avatar);
     localStorage.setItem("roomId",data.roomId);
+    actions.joinRoom({
+      roomId: data.roomId,
+      reconnect: false,
+      participant: {
+        userId: userId,
+        name: data.name,
+        avatar: data.avatar,
+      },
+    });
     history.push("/room/"+data.roomId);
   };
   return (
@@ -66,7 +78,7 @@ export default function JoinRoomComponent() {
             Close
           </Button>
           <Button variant="primary" onClick={handleSubmit(onSubmit)}>
-            Create
+            Join
           </Button>
         </Modal.Footer>
       </Modal>

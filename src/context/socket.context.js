@@ -34,7 +34,7 @@ class SocketProvider extends React.Component {
     // socket.receiverSetTrackIndex(this.setTrackIndex);
     // socket.receiverTrack(this.receiverTrack);
     // socket.receiverEventPlay(this.setStateIsPlay);
-    socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
+    // socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
 
     this.setState({ socket: socket });
   }
@@ -61,10 +61,10 @@ class SocketProvider extends React.Component {
     console.log(value)
     this.state.socket.leaveRoom(value);
   };
-  setStateIsLeaveRoom = (value) => {
-    console.log("Leave Room")
-    console.log(value);
-  };
+  // setStateIsLeaveRoom = (value) => {
+  //   console.log("Leave Room")
+  //   console.log(value);
+  // };
   // sendMessage = (data) => {
   //   this.setState({ isPlaying: data.flag });
   // };

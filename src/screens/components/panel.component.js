@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import AudioControls from "../audio/audio.control";
-import AudioPlayer from "../audio/audio.player";
+import AudioControls from "../../audio/audio.control";
+import AudioPlayer from "../../audio/audio.player";
 import { Badge } from "reactstrap";
 
-import AddTrack from "../track/add.track";
-import { PanelContext } from "../context/panel.context";
+import AddTrack from "../../track/add.track";
+import { PanelContext } from "../../context/panel.context";
 export default function Panel() {
   console.log("panel render");
   const { state, actions } = React.useContext(PanelContext);
@@ -114,7 +114,7 @@ export default function Panel() {
     };
   }, []);
 
-  console.log(state.tracks);
+  console.log(state.members);
   return (
     <div className={`sidebar-group`}>
       <div className="sidebar active">
@@ -158,12 +158,14 @@ export default function Panel() {
               />
             </div>
             <div className="d-flex flex-wrap justify-content-center">
-              <Badge className="m-2" color="primary">
-                Sieu nhan nhen
-              </Badge>
-              <Badge className="m-2" color="primary">
-                Sieu nhan nhen
-              </Badge>
+              {state.members && state.members.map((value, index)=> {
+                return(
+                <Badge className="m-2" color="primary" key={value.userId}>
+                  {value.name}
+                </Badge>
+                )
+              })}
+            
             </div>
           </PerfectScrollbar>
         </div>

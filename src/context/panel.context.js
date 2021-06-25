@@ -3,7 +3,7 @@ import mockup from "../assets/mockup.mp3";
 import { SocketContext } from "./socket.context";
 const PanelContext = React.createContext({});
 
-class PanelProvider extends React.Component {
+class PanelProvider extends React.PureComponent {
   static contextType = SocketContext;
   constructor() {
     super();
@@ -35,12 +35,33 @@ class PanelProvider extends React.Component {
     state.socket && state.socket.receiverSetTrackIndex(this.setTrackIndex);
     state.socket && state.socket.receiverTrack(this.receiverTrack);
     state.socket && state.socket.receiverEventPlay(this.setStateIsPlay);
-    state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
-    
+    state.socket && state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
+    state.socket && state.socket.receiverJoinRoom(this.setStateJoinRoom);
     this.setState({ socket: state.socket });
+    console.log(this.props.data);
   }
-  setStateIsLeaveRoom = (value) => {
-    console.log(value);
+  setStateJoinRoom = (data) => {
+    let index = this.state.members.findIndex((value,index) => {
+      return value.userId === data.participant.userId;
+    })
+    if(index !== -1){
+      this.setState({
+        members:[
+          ...this.state.members,
+          data.participant,
+        ]
+      })
+    }
+  
+  }
+  setStateIsLeaveRoom = (data) => {
+    let members = this.state.members.filter((value, index) => {
+      return value.userId !== data.userId;
+    })
+    this.setState({
+      members: members,
+    })
+    console.log(data);
   }
   setIsPlaying = (flag) => {
     console.log("Set is playing");
@@ -77,6 +98,7 @@ class PanelProvider extends React.Component {
         tracks: this.state.tracks,
         trackIndex: this.state.trackIndex,
         socket: this.state.socket,
+        members: this.state.members,
       },
       actions: {
         setIsPlaying: this.setIsPlaying,

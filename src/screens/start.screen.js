@@ -10,6 +10,7 @@ export default function StartScreen() {
     localStorage.getItem("roomId") &&
       history.push(`room/${localStorage.getItem("roomId")}`);
   }, []);
+  
   return (
     <div id="screens-start-screen">
       <div className="d-flex flex-column justify-content-center h-100 align-items-center">

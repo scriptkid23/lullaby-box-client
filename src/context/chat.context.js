@@ -10,6 +10,9 @@ class ChatProvider extends React.Component {
     super();
     this.state = {
       socket: null,
+      messages:[],
+      room:"",
+
     };
   }
   // receiverMessage = (data) => {
@@ -22,6 +25,7 @@ class ChatProvider extends React.Component {
     state.socket && state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
 
     this.setState({ socket: state.socket });
+    console.log(this.props.data);
   }
  
   leaveRoom = (value) => {
