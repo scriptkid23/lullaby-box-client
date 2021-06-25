@@ -9,14 +9,17 @@ class SocketProvider extends React.Component {
     this.state = {
       socket: null,
       isPlaying: false,
-      tracks: [{
-        title: "Track is Empty",
-        artist:"Unknown",
-        audioSrc: "",
-        image:"https://f4.bcbits.com/img/a3440516125_10.jpg"
-      }],
+      tracks: [
+        {
+          title: "Track is Empty",
+          artist: "Unknown",
+          audioSrc: mockup,
+          image: "https://f4.bcbits.com/img/a3440516125_10.jpg",
+        },
+      ],
       trackProgress: 0,
       trackIndex: 0,
+      members: [],
     };
   }
   receiverMessage = (data) => {
@@ -28,36 +31,37 @@ class SocketProvider extends React.Component {
   componentDidMount() {
     const socket = new SocketService();
 
-    // this.setState({
-    //   tracks: [
-    //     ...this.state.tracks,
-    //     {
-    //       title: "To the Moon",
-    //       artist: "hooligan.",
-    //       audioSrc: mockup,
-    //       image: "https://i.ytimg.com/vi/nmKTlmByng0/maxresdefault.jpg",
-    //     },
-    //   ],
-    // });
     socket.receiverSetTrackIndex(this.setTrackIndex);
     socket.receiverTrack(this.receiverTrack);
     socket.receiverEventPlay(this.setStateIsPlay);
-    // socket.receiverSetTrackProgress(this.setStateTrackProgress);
+    socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
+
     this.setState({ socket: socket });
   }
   setIsPlaying = (flag) => {
-    this.state.socket.sendEventPlay(flag);
+    this.state.socket.sendEventPlay({
+      roomId: localStorage.getItem("roomId"),
+      flag: flag,
+    });
   };
   setStateIsPlay = (flag) => {
-    this.setState({ isPlaying: flag });
+    console.log(flag);
+    this.setState({ isPlaying: flag.flag });
   };
   setTrackProgress = (value) => {
-    this.setState({trackProgress: value});
+    this.setState({ trackProgress: value });
   };
-  // setStateTrackProgress = (value) => {
-  //   console.log(value)
-  //   this.setState({ trackProgress: value.trackProgress });
-  // };
+  joinRoom = async (value) => {
+    this.state.socket && this.state.socket.joinRoom(value);
+   
+  };
+  leaveRoom = (value) => {
+    console.log(value)
+    this.state.socket.leaveRoom(value);
+  };
+  setStateIsLeaveRoom = (value) => {
+    console.log(value);
+  };
   sendMessage = (data) => {
     this.setState({ isPlaying: data.flag });
   };
@@ -78,16 +82,16 @@ class SocketProvider extends React.Component {
       state: {
         isPlaying: this.state.isPlaying,
         tracks: this.state.tracks,
-        trackProgress: this.state.trackProgress,
         socket: this.state.socket,
         trackIndex: this.state.trackIndex,
       },
       actions: {
         sendMessage: this.sendMessage,
         setIsPlaying: this.setIsPlaying,
-        setTrackProgress: this.setTrackProgress,
         setTrackIndex: this.setTrackIndex,
         addTrack: this.addTrack,
+        joinRoom: this.joinRoom,
+        leaveRoom: this.leaveRoom,
       },
     };
     return (

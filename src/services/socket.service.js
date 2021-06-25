@@ -1,21 +1,17 @@
 import SocketIOClient from "socket.io-client";
 
 export const ENVIRONMENTS = {
-  DEVELOPMENT : "ws://localhost:8081",
-  PRODUCTION : "http://metaphor-service.herokuapp.com/",
-}
-const baseUrl = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? 
-                ENVIRONMENTS.DEVELOPMENT : 
-                ENVIRONMENTS.PRODUCTION; 
+  DEVELOPMENT: "ws://localhost:8081",
+  PRODUCTION: "http://metaphor-service.herokuapp.com/",
+};
+const baseUrl =
+  !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+    ? ENVIRONMENTS.DEVELOPMENT
+    : ENVIRONMENTS.PRODUCTION;
 export class SocketService {
   socket;
   constructor() {
-    this.socket = SocketIOClient(baseUrl, {
-      query: {
-        authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjQzODQ2ODYyODksInN1YiI6IjYwZDA1ZDk5MTc2ZWQzM2RiYzE2YjRjMCIsImV4cCI6MTYyNDM4NDY4OTg4OX0.DajL86cYP35jw_hwPi0Dn1TvqlDbt9x-wPQqHBgs61c",
-      },
-    });
+    this.socket = SocketIOClient(baseUrl);
   }
   sendSetTrackIndex = (value) => {
     this.socket.emit("SEND_SET_TRACK_INDEX", value);
@@ -30,17 +26,30 @@ export class SocketService {
     this.socket.on("RECEIVER_ADD_TRACK", callback);
   };
   sendEventPlay = (value) => {
-    this.socket.emit("SEND_EVENT_PLAY",value);
-  }
+    this.socket.emit("SEND_EVENT_PLAY", value);
+  };
   receiverEventPlay = (callback) => {
-    this.socket.on("RECEIVER_EVENT_PLAY",callback);
-  }
+    this.socket.on("RECEIVER_EVENT_PLAY", callback);
+  };
   sendSetTrackProgress = (value) => {
-    this.socket.emit("SEND_SET_TRACK_PROGRESS",value);
-  }
+    this.socket.emit("SEND_SET_TRACK_PROGRESS", value);
+  };
   receiverSetTrackProgress = (callback) => {
-    this.socket.on("RECEIVER_SET_TRACK_PROGRESS",callback);
-  }
+    this.socket.on("RECEIVER_SET_TRACK_PROGRESS", callback);
+  };
+  joinRoom = (value) => {
+    this.socket.emit("JOIN_ROOM", value);
+  };
+  receiverJoinRoom = (callback) => {
+    this.socket.on("RECEIVER_JOIN_ROOM", callback);
+  };
+  leaveRoom = (value) => {
+    this.socket.emit("LEAVE_ROOM", value);
+  };
+  receiverLeaveRoom = (callback) => {
+    this.socket.on("RECEIVER_LEAVE_ROOM", callback);
+  };
+
   disconnect = () => {
     this.socket.disconnect();
   };

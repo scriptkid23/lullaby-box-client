@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClipboard } from "@fortawesome/free-solid-svg-icons";
+
 import { useHistory } from "react-router";
 export default function JoinRoomComponent() {
   const [show, setShow] = useState(false);
@@ -13,6 +12,7 @@ export default function JoinRoomComponent() {
   const handleShow = () => setShow(true);
   
   const onSubmit = (data) => {
+    localStorage.setItem("userId",uuidv4());
     localStorage.setItem("user", data.name);
     localStorage.setItem("avatar", data.avatar);
     localStorage.setItem("roomId",data.roomId);

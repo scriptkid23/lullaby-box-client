@@ -10,14 +10,14 @@ const AudioPlayer = ({ tracks }) => {
   const { state, actions } = React.useContext(SocketContext);
 
   const { title, artist, image, audioSrc } = tracks[state.trackIndex];
-
+  const [trackProgress, setTrackProgress] = useState(0);
   const audioRef = useRef(new Audio(audioSrc));
   const intervalRef = useRef();
   const isReady = useRef(false);
 
   const { duration } = audioRef.current;
   const currentPercentage = duration
-    ? `${(state.trackProgress / duration) * 100}%`
+    ? `${(trackProgress / duration) * 100}%`
     : "0%";
   const trackStyling = `
     -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #fff), color-stop(${currentPercentage}, #777))
@@ -31,7 +31,7 @@ const AudioPlayer = ({ tracks }) => {
       if (audioRef.current.ended) {
         toNextTrack();
       } else {
-        actions.setTrackProgress(audioRef.current.currentTime);
+        setTrackProgress(audioRef.current.currentTime);
       }
     }, [1000]);
   };
@@ -39,7 +39,7 @@ const AudioPlayer = ({ tracks }) => {
     // Clear any timers already running
     clearInterval(intervalRef.current);
     audioRef.current.currentTime = value;
-    actions.setTrackProgress(audioRef.current.currentTime);
+    setTrackProgress(audioRef.current.currentTime);
   };
   const onScrubEnd = () => {
     // If not already playing, start
@@ -83,7 +83,7 @@ const AudioPlayer = ({ tracks }) => {
     audioRef.current.pause();
 
     audioRef.current = new Audio(audioSrc);
-    actions.setTrackProgress(audioRef.current.currentTime);
+    setTrackProgress(audioRef.current.currentTime);
 
     if (isReady.current) {
       audioRef.current.play();
@@ -120,7 +120,7 @@ const AudioPlayer = ({ tracks }) => {
         />
         <input
           type="range"
-          value={state.trackProgress}
+          value={trackProgress}
           step="1"
           min="0"
           max={duration ? duration : `${duration}`}

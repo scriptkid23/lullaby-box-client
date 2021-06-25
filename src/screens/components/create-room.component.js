@@ -5,13 +5,16 @@ import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router";
-
+import { SocketContext } from "../../context/socket.context";
+import Axios from "axios";
+import { baseUrl } from "../../constants";
 export default function CreateRoomComponent() {
   const [show, setShow] = useState(false);
   const { register, handleSubmit } = useForm();
   const history = useHistory();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const { state, actions } = React.useContext(SocketContext);
   const copyId = () => {
     /* Get the text field */
     var copyText = document.getElementById("roomId");
@@ -25,17 +28,36 @@ export default function CreateRoomComponent() {
 
     /* Alert the copied text */
   };
-  const onSubmit = (data) => {
-    localStorage.setItem("userId",uuidv4());
-    localStorage.setItem("name", data.name);
-    localStorage.setItem("room", data.room);
-    localStorage.setItem("avatar", data.avatar);
-    localStorage.setItem("roomId",data.roomId);
-    history.push("/room/"+data.roomId);
+  const onSubmit = async (data) => {
+    let userId = uuidv4();
+    let result = await Axios.post(baseUrl + "/room/create", {
+      roomId: data.roomId,
+      name: data.room,
+    });
+    if (result) {
+      actions.joinRoom({
+        roomId: data.roomId,
+        reconnect: false,
+        participant: {
+          userId: userId,
+          name: data.name,
+          avatar: data.avatar,
+        },
+      });
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("name", data.name);
+      localStorage.setItem("room", data.room);
+      localStorage.setItem("avatar", data.avatar);
+      localStorage.setItem("roomId", data.roomId);
+      history.push("/room/" + data.roomId);
+    }
   };
   return (
     <>
-      <button className="btn btn-gradient-primary btn-block" onClick={handleShow}>
+      <button
+        className="btn btn-gradient-primary btn-block"
+        onClick={handleShow}
+      >
         Create Room
       </button>
       <Modal
@@ -81,11 +103,10 @@ export default function CreateRoomComponent() {
                     <FontAwesomeIcon icon={faClipboard} />
                   </InputGroup.Text>
                 </InputGroup.Prepend>
-                
               </InputGroup>
               <Form.Text className="text-muted">
-                  Send room id for your friend
-                </Form.Text>
+                Send room id for your friend
+              </Form.Text>
             </Form.Group>
 
             <Form.Group>

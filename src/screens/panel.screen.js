@@ -8,6 +8,7 @@ import AddTrack from "../track/add.track";
 export default function Panel({ tracks }) {
   const { state, actions } = React.useContext(SocketContext);
   const { title, artist, image, audioSrc } = tracks[state.trackIndex];
+  const [isPlaying, setIsPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
   const audioRef = useRef(new Audio(audioSrc));
   const intervalRef = useRef();
@@ -41,7 +42,7 @@ export default function Panel({ tracks }) {
   const onScrubEnd = () => {
     // If not already playing, start
     if (!state.isPlaying) {
-      actions.setIsPlaying(true);
+      setIsPlaying(true);
     }
     startTimer();
   };
@@ -84,7 +85,7 @@ export default function Panel({ tracks }) {
 
     if (isReady.current) {
       audioRef.current.play();
-      actions.setIsPlaying(true);
+      setIsPlaying(true);
       startTimer();
     } else {
       // Set the isReady ref as true for the next pass
