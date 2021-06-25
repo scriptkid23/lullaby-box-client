@@ -11,9 +11,9 @@ export default function Panel() {
   console.log("panel render");
   const { state, actions } = React.useContext(PanelContext);
 
-  const { title, artist, image, audioSrc } = state.tracks[state.trackIndex];
+  const { name, artist, image, url } = state.tracks[state.trackIndex];
   const [trackProgress, setTrackProgress] = useState(0);
-  const audioRef = useRef(new Audio(audioSrc));
+  const audioRef = useRef(new Audio(url));
   const intervalRef = useRef();
   const isReady = useRef(false);
   const { duration } = audioRef.current;
@@ -95,7 +95,7 @@ export default function Panel() {
   useEffect(() => {
     audioRef.current.pause();
 
-    audioRef.current = new Audio(audioSrc);
+    audioRef.current = new Audio(url);
     setTrackProgress(audioRef.current.currentTime);
 
     if (isReady.current) {
@@ -136,9 +136,9 @@ export default function Panel() {
               <img
                 className={`artwork ${state.isPlaying && "active"}`}
                 src={image}
-                alt={`track artwork for ${title} by ${artist}`}
+                alt={`track artwork for ${name} by ${artist}`}
               />
-              <h2 className="title">{title}</h2>
+              <h2 className="title">{name}</h2>
               <h3 className="artist">{artist}</h3>
               <AudioControls
                 isPlaying={state.isPlaying}

@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, ListGroup } from "react-bootstrap";
 import { SocketContext } from "../context/socket.context";
-import * as FeatherIcon from 'react-feather'
+import * as FeatherIcon from "react-feather";
 import Axios from "axios";
 import { baseUrl } from "../constants";
 import _, { filter } from "lodash";
+import { PanelContext } from "../context/panel.context";
 function AddTrack() {
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
-  const [tracks, setTrack] = useState([]);
-  const [toggle, setToggle] = useState(false);
+  const [track, setTrack] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const { state, actions } = React.useContext(SocketContext);
+  const { state, actions } = React.useContext(PanelContext);
   const [query, setQuery] = React.useState("");
   const search = async (e) => {
     e.preventDefault();
@@ -23,13 +23,7 @@ function AddTrack() {
     console.log(data);
     let result = [];
     for (let i in data) {
-      result.push({
-        _id: data[i]._id,
-        title: data[i].name,
-        artist: data[i].artist,
-        audioSrc: data[i].url,
-        image: data[i].image,
-      });
+      result.push(data[i]);
     }
     setList(result);
   };
@@ -38,25 +32,27 @@ function AddTrack() {
       return data.title !== value.title;
     });
     setList(filtered);
-    tracks.push(value);
-    setTrack(tracks);
+    console.log(value);
+    setTrack(value);
   };
   const handleSubmit = () => {
-    console.log(tracks);
-    actions.addTrack(tracks);
+    let obj = {
+      roomId: localStorage.getItem("roomId"),
+      track: track,
+    };
+    actions.addTrack(obj);
     setTrack([]);
     setShow(false);
   };
 
   return (
     <>
-     
       <a
         href="#/"
         onClick={handleShow}
         className="btn btn-outline-light sidebar-close"
       >
-        <FeatherIcon.Plus/>
+        <FeatherIcon.Plus />
       </a>
 
       <Modal show={show} onHide={handleClose}>
@@ -82,7 +78,7 @@ function AddTrack() {
                     type="button"
                     onClick={() => selectTrack(value)}
                   >
-                    {value.title} | {value.artist}
+                    {value.name} | {value.artist}
                   </ListGroup.Item>
                 );
               })}

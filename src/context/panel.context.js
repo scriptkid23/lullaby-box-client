@@ -14,15 +14,15 @@ class PanelProvider extends React.Component {
       isPlaying: false,
       tracks: [
         {
-          title: "Track is Empty",
+          name: "Track is Empty",
           artist: "Unknown",
-          audioSrc: mockup,
+          url: mockup,
           image: "https://f4.bcbits.com/img/a3440516125_10.jpg",
         },
         {
-          title: "To the Moon",
+          name: "To the Moon",
           artist: "Unknown",
-          audioSrc: mockup,
+          url: mockup,
           image: "https://f4.bcbits.com/img/a3440516125_10.jpg",
         },
       ],
@@ -100,7 +100,7 @@ class PanelProvider extends React.Component {
   };
   receiverTrack = (value) => {
     this.setState({
-      tracks: [...this.state.tracks, ...value],
+      tracks: [...this.state.tracks, value.track],
     });
   };
 
