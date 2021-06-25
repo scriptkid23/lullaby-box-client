@@ -14,6 +14,7 @@ class ChatProvider extends React.Component {
       socket: null,
       messages: [],
       room: "",
+      owner:localStorage.getItem("userId"),
     };
   }
   // receiverMessage = (data) => {
@@ -60,6 +61,7 @@ class ChatProvider extends React.Component {
         socket: this.state.socket,
         room: this.state.room,
         messages: this.state.messages,
+        owner: this.state.owner,
       },
       actions: {
         leaveRoom: this.leaveRoom,

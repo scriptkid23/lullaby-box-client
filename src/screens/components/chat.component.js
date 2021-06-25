@@ -4,7 +4,7 @@ import ChatFooter from "./chat-footer.component";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatContext } from "../../context/chat.context";
 
-const owner = localStorage.getItem("userId");
+
 export default function Chat() {
   const [scrollEl, setScrollEl] = useState();
   const { state } = React.useContext(ChatContext);
@@ -32,7 +32,7 @@ export default function Chat() {
                 return (
                   <div
                     className={`message-item ${
-                      owner === value.userId ? "outgoing-message" : " "
+                      state.owner === value.userId ? "outgoing-message" : " "
                     }`}
                   >
                     <div className="message-avatar">
