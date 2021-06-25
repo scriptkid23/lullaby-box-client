@@ -32,10 +32,17 @@ class ChatProvider extends React.Component {
     const { state, actions } = this.context;
     this.fetchData();
     state.socket && state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
-
+    state.socket && state.socket.receiverMessage(this.updateMessages);
     this.setState({ socket: state.socket });
   }
- 
+  updateMessages = (value) => {
+    this.setState({
+      messages: [...this.state.messages, value.message],
+    })
+  }
+  sendMessage = (value) => {
+    this.state.socket.sendMessage(value);
+  }
 
   leaveRoom = (value) => {
     console.log("start leave room");
@@ -51,10 +58,12 @@ class ChatProvider extends React.Component {
     const value = {
       state: {
         socket: this.state.socket,
-        room: this.state.room
+        room: this.state.room,
+        messages: this.state.messages,
       },
       actions: {
         leaveRoom: this.leaveRoom,
+        sendMessage: this.sendMessage,
       },
     };
     return (

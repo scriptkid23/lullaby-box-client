@@ -4,8 +4,8 @@ import ChatFooter from "./chat-footer.component";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatContext } from "../../context/chat.context";
 
+const owner = localStorage.getItem("userId");
 export default function Chat() {
-  const [inputMsg, setInputMsg] = useState("");
   const [scrollEl, setScrollEl] = useState();
   const { state } = React.useContext(ChatContext);
   useEffect(() => {
@@ -21,16 +21,37 @@ export default function Chat() {
     }
   });
 
-  console.log("Chat render");
-  console.log(state);
-  const MessagesView = (props) => {};
   return (
     <div className="chat open">
       <React.Fragment>
         <ChatHeader room={state.room} />
         <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)}>
           <div className="chat-body">
-            <div className="messages">{null}</div>
+            <div className="messages">
+              {state.messages.map((value, index) => {
+                return (
+                  <div
+                    className={`message-item ${
+                      owner === value.userId ? "outgoing-message" : " "
+                    }`}
+                  >
+                    <div className="message-avatar">
+                      <figure className="avatar">
+                        <img
+                          src={value.avatar}
+                          className="rounded-circle"
+                          alt="avatar"
+                        />
+                      </figure>
+                      <div>
+                        <h5>{value.name}</h5>
+                      </div>
+                    </div>
+                    <div className="message-content">{value.message}</div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </PerfectScrollbar>
         <ChatFooter />

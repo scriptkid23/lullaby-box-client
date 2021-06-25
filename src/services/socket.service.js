@@ -50,6 +50,12 @@ class SocketService {
   receiverLeaveRoom = (callback) => {
     this.socket.on("RECEIVER_LEAVE_ROOM", callback);
   };
+  sendMessage = (value) => {
+    this.socket.emit("SEND_MESSAGE",value);
+  }
+  receiverMessage = (callback) => {
+    this.socket.on("RECEIVER_MESSAGE",callback);
+  }
 
   disconnect = () => {
     this.socket.disconnect();
