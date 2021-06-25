@@ -1,5 +1,7 @@
+import axios from "axios";
 import React from "react";
 import mockup from "../assets/mockup.mp3";
+import { baseUrl } from "../constants";
 import { SocketContext } from "./socket.context";
 const PanelContext = React.createContext({});
 
@@ -26,13 +28,14 @@ class PanelProvider extends React.Component {
       ],
       trackProgress: 0,
       trackIndex: 0,
-      members: [],
+      participants: [],
     };
   }
 
   componentDidMount() {
     const { state, actions } = this.context;
     console.log(state.socket);
+    this.fetchData();
     state.socket && state.socket.receiverSetTrackIndex(this.setTrackIndex);
     state.socket && state.socket.receiverTrack(this.receiverTrack);
     state.socket && state.socket.receiverEventPlay(this.setStateIsPlay);
@@ -44,22 +47,32 @@ class PanelProvider extends React.Component {
   //   console.log("disconnected")
   //   this.state.socket && this.state.socket.disconnect();
   // }
+  
   setStateJoinRoom = (data) => {
-    let index = this.state.members.findIndex((value, index) => {
-      return value.userId === data.participant.userId;
-    });
-    if (index !== -1) {
+    // let index = this.state.participants.findIndex((value, index) => {
+    //   return value.userId === data.participant.userId;
+    // });
+    // if (index !== -1) {
       this.setState({
-        members: [...this.state.members, data.participant],
+        participants: [...this.state.participants, data.participant],
       });
-    }
+    // }
   };
+  fetchData = async() => {
+    let {data} = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
+    console.log(data);
+    this.setState({
+      participants: [...data.participants],
+      tracks:[...this.state.tracks,...data.tracks],
+    })
+   
+  }
   setStateIsLeaveRoom = (data) => {
-    let members = this.state.members.filter((value, index) => {
+    let participants = this.state.participants.filter((value, index) => {
       return value.userId !== data.userId;
     });
     this.setState({
-      members: members,
+      members: [...participants],
     });
     console.log(data);
   };
@@ -74,9 +87,9 @@ class PanelProvider extends React.Component {
     console.log(flag);
     this.setState({ isPlaying: flag.flag });
   };
-  setTrackProgress = (value) => {
-    this.setState({ trackProgress: value });
-  };
+  // setTrackProgress = (value) => {
+  //   this.setState({ trackProgress: value });
+  // };
 
   setTrackIndex = (index) => {
     console.log(index);
@@ -98,12 +111,13 @@ class PanelProvider extends React.Component {
         tracks: this.state.tracks,
         trackIndex: this.state.trackIndex,
         socket: this.state.socket,
-        members: this.state.members,
+        participants: this.state.participants,
       },
       actions: {
         setIsPlaying: this.setIsPlaying,
         setTrackIndex: this.setTrackIndex,
         addTrack: this.addTrack,
+       
       },
     };
     return (

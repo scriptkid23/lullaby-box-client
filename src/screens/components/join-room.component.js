@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useHistory } from "react-router";
 import { SocketContext } from "../../context/socket.context";
+import axios from "axios";
+import { baseUrl } from "../../constants";
 export default function JoinRoomComponent() {
   const [show, setShow] = useState(false);
   const {actions} = React.useContext(SocketContext);
@@ -15,19 +17,18 @@ export default function JoinRoomComponent() {
   
   const onSubmit = (data) => {
     const userId  =uuidv4();
+    axios.post(baseUrl+'/room/join',{
+      roomId: data.roomId,
+      participant:{
+        userId: userId,
+        name: data.name,
+        avatar: data.avatar,
+      }
+    })
     localStorage.setItem("userId",userId);
     localStorage.setItem("name", data.name);
     localStorage.setItem("avatar", data.avatar);
     localStorage.setItem("roomId",data.roomId);
-    actions.joinRoom({
-      roomId: data.roomId,
-      reconnect: false,
-      participant: {
-        userId: userId,
-        name: data.name,
-        avatar: data.avatar,
-      },
-    });
     history.push("/room/"+data.roomId);
   };
   return (

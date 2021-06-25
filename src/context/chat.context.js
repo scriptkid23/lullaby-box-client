@@ -19,9 +19,18 @@ class ChatProvider extends React.Component {
   // receiverMessage = (data) => {
   //   this.setState({ trackProgress: data.trackProgress });
   // };
+  fetchData = async() => {
+    let {data} = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
+    console.log(data);
+    this.setState({
+      messages: data.messages,
+      room:data.name,
+    })
+   
+  }
   componentDidMount() {
     const { state, actions } = this.context;
-
+    this.fetchData();
     state.socket && state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
 
     this.setState({ socket: state.socket });
@@ -42,6 +51,7 @@ class ChatProvider extends React.Component {
     const value = {
       state: {
         socket: this.state.socket,
+        room: this.state.room
       },
       actions: {
         leaveRoom: this.leaveRoom,

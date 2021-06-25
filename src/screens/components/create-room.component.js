@@ -35,15 +35,14 @@ export default function CreateRoomComponent() {
       name: data.room,
     });
     if (result) {
-      actions.joinRoom({
+      Axios.post(baseUrl+'/room/join',{
         roomId: data.roomId,
-        reconnect: false,
-        participant: {
+        participant:{
           userId: userId,
           name: data.name,
           avatar: data.avatar,
-        },
-      });
+        }
+      })
       localStorage.setItem("userId", userId);
       localStorage.setItem("name", data.name);
       localStorage.setItem("room", data.room);

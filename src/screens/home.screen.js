@@ -9,10 +9,8 @@ import { DataProvider } from "../context/data.context";
 export default function HomeScreen() {
   const { state, actions } = React.useContext(SocketContext);
   React.useEffect(() => {
-    console.log("join room when reload")
     actions.joinRoom({
       roomId: localStorage.getItem("roomId"),
-      reconnect: true,
       participant: {
         userId: localStorage.getItem("userId"),
         name: localStorage.getItem("name"),
@@ -22,18 +20,16 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <DataProvider>
-      <div className="layout">
-        <div className="content">
-          <ChatProvider>
-            <Chat />
-          </ChatProvider>
+    <div className="layout">
+      <div className="content">
+        <ChatProvider>
+          <Chat />
+        </ChatProvider>
 
-          <PanelProvider>
-            <Panel />
-          </PanelProvider>
-        </div>
+        <PanelProvider>
+          <Panel />
+        </PanelProvider>
       </div>
-    </DataProvider>
+    </div>
   );
 }

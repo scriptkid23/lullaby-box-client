@@ -28,16 +28,6 @@ class  DataProvider extends React.Component {
     componentDidMount(){
       this.fetchData();
     }
-    updateMessage = () => {
-
-    }
-    updateParticipant = () => {
-
-    }
-    updateTrack = () => {
-
-    }
-  
    render(){
      const value = {
        state: {
@@ -46,11 +36,6 @@ class  DataProvider extends React.Component {
          participants: this.state.participants,
          tracks: this.state.tracks,
        },
-       actions: {
-        updateMessage: this.updateMessage,
-        updateParticipant: this.updateParticipant,
-        updateTrack: this.updateTrack,
-       }
      }
     return (
       <DataContext.Provider value={value}>

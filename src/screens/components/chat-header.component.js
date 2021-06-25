@@ -4,7 +4,7 @@ import * as FeatherIcon from "react-feather";
 import { ChatContext } from "../../context/chat.context";
 import { baseUrl } from "../../constants";
 import axios from "axios";
-export default function ChatHeader({ name }) {
+export default function ChatHeader({room}) {
   const history = useHistory();
   const { state, actions } = React.useContext(ChatContext);
   const logout = async () => {
@@ -26,7 +26,7 @@ export default function ChatHeader({ name }) {
           />
         </figure>
         <div>
-          <h5>{name}</h5>
+          <h5>{room}</h5>
         </div>
       </div>
       <div className="chat-header-action">
