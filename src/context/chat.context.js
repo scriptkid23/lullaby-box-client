@@ -21,6 +21,7 @@ class ChatProvider extends React.Component {
       effectName:'',
       isTyping:false,
       sender: '',
+      roomIcon: '',
     };
   }
   // receiverMessage = (data) => {
@@ -32,6 +33,7 @@ class ChatProvider extends React.Component {
     this.setState({
       messages: data.messages,
       room:data.name,
+      roomIcon:data.icon,
     })
    
   }
@@ -92,6 +94,7 @@ class ChatProvider extends React.Component {
         effectName: this.state.effectName,
         isTyping: this.state.isTyping,
         sender: this.state.sender,
+        roomIcon: this.state.roomIcon,
       },
       actions: {
         leaveRoom: this.leaveRoom,

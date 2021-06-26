@@ -24,7 +24,7 @@ export default function Chat() {
       {state.effectName === 'hpbd' && <LottieGenerator path="https://assets2.lottiefiles.com/packages/lf20_u4yrau.json"/>}
       {state.effectName === 'loki' && <LottieGenerator path="https://assets10.lottiefiles.com/packages/lf20_ocrcnofw.json"/>}
       <React.Fragment>
-        <ChatHeader room={state.room} />
+        <ChatHeader room={state.room} roomIcon={state.roomIcon}/>
         <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)}>
           <div className="chat-body">
             <div className="messages">

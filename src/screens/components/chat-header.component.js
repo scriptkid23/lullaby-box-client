@@ -34,7 +34,7 @@ function Switchtheme() {
     </React.Fragment>
   );
 }
-export default function ChatHeader({ room }) {
+export default function ChatHeader({ room, roomIcon }) {
   const history = useHistory();
   const { actions } = React.useContext(ChatContext);
 
@@ -51,9 +51,9 @@ export default function ChatHeader({ room }) {
   return (
     <div className="chat-header">
       <div className="chat-header-user">
-        <figure className="avatar avatar-state-success">
+        <figure className="avatar">
           <img
-            src="https://i.ytimg.com/vi/_joUTZzb9gY/maxresdefault.jpg"
+            src={roomIcon}
             className="rounded-circle"
             alt="avatar"
           />
