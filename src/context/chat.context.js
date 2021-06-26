@@ -26,7 +26,7 @@ class ChatProvider extends React.Component {
   // };
   fetchData = async() => {
     let {data} = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
-    console.log(data);
+    
     this.setState({
       messages: data.messages,
       room:data.name,
@@ -59,13 +59,9 @@ class ChatProvider extends React.Component {
   }
 
   leaveRoom = (value) => {
-    console.log("start leave room");
-    console.log(value);
     this.state.socket && this.state.socket.leaveRoom(value);
   };
   setStateIsLeaveRoom = (value) => {
-    console.log("Leave Room");
-    console.log(value);
   };
   setStateEffect = (value) => {
     this.setState({effect: value})

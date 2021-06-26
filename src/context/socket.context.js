@@ -14,17 +14,14 @@ class SocketProvider extends React.Component {
   }
  
   joinRoom = (value) => {
-    console.log("start join room");
+    
     this.state.socket && this.state.socket.joinRoom(value);
   };
   leaveRoom = (value) => {
-    console.log("start leave room");
-    console.log(value);
     this.state.socket && this.state.socket.leaveRoom(value);
   };
 
   render() {
-    console.log("socket context render");
     const value = {
       state: {
         socket: this.state.socket,

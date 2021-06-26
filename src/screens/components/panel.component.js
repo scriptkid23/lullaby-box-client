@@ -8,7 +8,6 @@ import AddTrack from "../../track/add.track";
 import { PanelContext } from "../../context/panel.context";
 
 export default function Panel() {
-  console.log("panel render");
   const { state, actions } = React.useContext(PanelContext);
 
   const { name, artist, image, url } = state.tracks[state.trackIndex];
@@ -116,7 +115,6 @@ export default function Panel() {
     };
   }, []);
 
-  console.log(state);
   return (
     <div className={`sidebar-group`}>
       <div className="sidebar active">

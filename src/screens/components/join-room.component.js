@@ -30,7 +30,6 @@ export default function JoinRoomComponent() {
 
   const onSubmit = async (data) => {
     let isExist = await axios.get(baseUrl + "/room/check/" + data.roomId);
-    console.log(isExist.data)
     if (!isExist.data) {
       setVisible(true);
       setAlert("Room not exist 😅")
