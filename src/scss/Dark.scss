@@ -1,9 +1,9 @@
-$dark-mode: #1c1f2a;
+$dark-mode: #1a2236;
 $dark-mode-light: $dark-mode + 15;
 
 body.dark {
 	background-color: $dark-mode;
-	color: #efefef;
+	color: rgba(white, .75);
 
 	.reactour__helper {
 		background: $dark-mode-light;
@@ -113,6 +113,37 @@ body.dark {
 									background-color: $dark-mode-light;
 								}
 							}
+							&.outgoing-message{
+								.message-content{
+									background: linear-gradient(-45deg, #ffa63d, #ff3d77, #338aff, #3cf0c5);
+									-webkit-animation: anime 16s linear infinite;
+          							animation: anime 16s linear infinite;
+									  background-size: 600%;
+
+								}
+								@-webkit-keyframes anime {
+									0% {
+									  background-position: 0% 50%;
+									}
+									50% {
+									  background-position: 100% 50%;
+									}
+									100% {
+									  background-position: 0% 50%;
+									}
+								  }
+								  @keyframes anime {
+									0% {
+									  background-position: 0% 50%;
+									}
+									50% {
+									  background-position: 100% 50%;
+									}
+									100% {
+									  background-position: 0% 50%;
+									}
+								  }
+							}	
 
 							&.messages-divider:before {
 								background-color: $dark-mode-light;
