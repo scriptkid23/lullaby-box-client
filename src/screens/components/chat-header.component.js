@@ -2,12 +2,42 @@ import React from "react";
 import { useHistory } from "react-router";
 import * as FeatherIcon from "react-feather";
 import { ChatContext } from "../../context/chat.context";
-import { baseUrl } from "../../constants";
-import axios from "axios";
+import { Tooltip } from "reactstrap";
+
+function Switchtheme() {
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
+  const [mode, setMode] = React.useState(false);
+  const setTheme = () => {
+    document.body.classList.toggle("dark");
+    setMode(!mode);
+  };
+  const toggle = () => setTooltipOpen(!tooltipOpen);
+  return (
+    <React.Fragment>
+      <button
+        className={`btn btn-outline-light ${
+          mode ? "text-warning" : "text-success"
+        }`}
+        onClick={setTheme}
+        id="Tooltip-Theme"
+      >
+        {!mode ? <FeatherIcon.Moon />: <FeatherIcon.Sun/>}
+      </button>
+      <Tooltip
+        placement="bottom"
+        isOpen={tooltipOpen}
+        target={"Tooltip-Theme"}
+        toggle={toggle}
+      >
+        {!mode ? "Dark mode" : "Light mode"}
+      </Tooltip>
+    </React.Fragment>
+  );
+}
 export default function ChatHeader({ room }) {
   const history = useHistory();
-  const { state, actions } = React.useContext(ChatContext);
-  const { mode, setMode } = React.useState(false);
+  const { actions } = React.useContext(ChatContext);
+
   const logout = async () => {
     actions.leaveRoom({
       roomId: localStorage.getItem("roomId"),
@@ -16,9 +46,8 @@ export default function ChatHeader({ room }) {
     localStorage.clear();
     history.push("/");
   };
-  const setTheme = () => {
-      document.body.classList.toggle('dark')
-  };
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
+  const toggle = () => setTooltipOpen(!tooltipOpen);
   return (
     <div className="chat-header">
       <div className="chat-header-user">
@@ -36,22 +65,24 @@ export default function ChatHeader({ room }) {
       <div className="chat-header-action">
         <ul className="list-inline">
           <li className="list-inline-item">
-            <button
-              className="btn btn-outline-light text-success"
-              onClick={setTheme}
-              id="Tooltip-Voice-Call"
-            >
-              <FeatherIcon.Moon />
-            </button>
+            <Switchtheme />
           </li>
           <li className="list-inline-item">
             <button
               className="btn btn-outline-light text-success"
               onClick={() => logout()}
-              id="Tooltip-Voice-Call"
+              id="Tooltip-Logout"
             >
               <FeatherIcon.LogOut />
             </button>
+            <Tooltip
+              placement="bottom"
+              isOpen={tooltipOpen}
+              target={"Tooltip-Logout"}
+              toggle={toggle}
+            >
+              Logout
+            </Tooltip>
           </li>
         </ul>
       </div>

@@ -14,7 +14,6 @@ class SocketService {
     this.socket = SocketIOClient(baseUrl);
   }
   sendSetTrackIndex = (value) => {
-    console.log(value);
     this.socket.emit("SEND_SET_TRACK_INDEX", value);
   };
   receiverSetTrackIndex = (callback) => {

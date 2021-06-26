@@ -8,7 +8,7 @@ import unicorn026 from "./026-unicorn.svg";
 import unicorn028 from "./028-unicorn.svg";
 import unicorn029 from "./029-unicorn.svg";
 import unicorn047 from "./047-unicorn.svg";
-
+import conguratulation from './congratulations.json'
 export const unicorn = [
   unicorn001,
   unicorn002,
@@ -21,3 +21,6 @@ export const unicorn = [
   unicorn029,
   unicorn047,
 ];
+export const lottieEffect = {
+  congratulation: conguratulation,
+}

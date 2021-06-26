@@ -5,7 +5,9 @@ import { SocketContext } from "./socket.context";
 import axios from "axios";
 import { baseUrl } from "../constants";
 const ChatContext = React.createContext({});
-
+// heart https://assets8.lottiefiles.com/datafiles/nZgj7wTd56UtH6m/data.json
+// conguration https://assets2.lottiefiles.com/packages/lf20_u4yrau.json
+// loki https://assets10.lottiefiles.com/packages/lf20_ocrcnofw.json
 class ChatProvider extends React.Component {
   static contextType = SocketContext;
   constructor() {
@@ -15,6 +17,8 @@ class ChatProvider extends React.Component {
       messages: [],
       room: "",
       owner:localStorage.getItem("userId"),
+      effect: false,
+      effectName:'',
     };
   }
   // receiverMessage = (data) => {
@@ -22,7 +26,7 @@ class ChatProvider extends React.Component {
   // };
   fetchData = async() => {
     let {data} = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
-    console.log(data);
+    
     this.setState({
       messages: data.messages,
       room:data.name,
@@ -37,6 +41,15 @@ class ChatProvider extends React.Component {
     this.setState({ socket: state.socket });
   }
   updateMessages = (value) => {
+    if(value.message.message === 'hpbd'){
+      this.setState({effect: true,effectName: 'hpbd'})
+    }
+    if(value.message.message === 'love'){
+      this.setState({effect: true,effectName: 'love'})
+    }
+    if(value.message.message === 'loki'){
+      this.setState({effect: true,effectName: 'loki'})
+    }
     this.setState({
       messages: [...this.state.messages, value.message],
     })
@@ -46,14 +59,13 @@ class ChatProvider extends React.Component {
   }
 
   leaveRoom = (value) => {
-    console.log("start leave room");
-    console.log(value);
     this.state.socket && this.state.socket.leaveRoom(value);
   };
   setStateIsLeaveRoom = (value) => {
-    console.log("Leave Room");
-    console.log(value);
   };
+  setStateEffect = (value) => {
+    this.setState({effect: value})
+  }
 
   render() {
     const value = {
@@ -62,10 +74,13 @@ class ChatProvider extends React.Component {
         room: this.state.room,
         messages: this.state.messages,
         owner: this.state.owner,
+        effect: this.state.effect,
+        effectName: this.state.effectName,
       },
       actions: {
         leaveRoom: this.leaveRoom,
         sendMessage: this.sendMessage,
+        setStateEffect: this.setStateEffect,
       },
     };
     return (

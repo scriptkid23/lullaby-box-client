@@ -9,7 +9,6 @@ export default function ChatFooter() {
   const {state, actions} = React.useContext(ChatContext);
   const handleSendMessage = (e) => {
     e.preventDefault()
-    console.log(message);
     if(message.length > 0){
       let request = {
         roomId: localStorage.getItem("roomId"),

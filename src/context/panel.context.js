@@ -28,7 +28,6 @@ class PanelProvider extends React.Component {
 
   componentDidMount() {
     const { state, actions } = this.context;
-    console.log(state.socket);
     this.fetchData();
     state.socket && state.socket.receiverSetTrackIndex(this.setTrackIndex);
     state.socket && state.socket.receiverTrack(this.receiverTrack);
@@ -54,7 +53,6 @@ class PanelProvider extends React.Component {
   };
   fetchData = async() => {
     let {data} = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
-    console.log(data);
     this.setState({
       participants: [...data.participants],
       tracks:[...this.state.tracks,...data.tracks],
@@ -68,17 +66,17 @@ class PanelProvider extends React.Component {
     this.setState({
       participants: [...participants],
     });
-    console.log(data);
+    
   };
   setIsPlaying = (flag) => {
-    console.log("Set is playing");
+    
     this.state.socket.sendEventPlay({
       roomId: localStorage.getItem("roomId"),
       flag: flag,
     });
   };
   setStateIsPlay = (flag) => {
-    console.log(flag);
+   
     this.setState({ isPlaying: flag.flag });
   };
   // setTrackProgress = (value) => {
@@ -86,7 +84,7 @@ class PanelProvider extends React.Component {
   // };
 
   setTrackIndex = (index) => {
-    console.log(index);
+   
     this.setState({ trackIndex: index.trackIndex });
   };
   addTrack = (value) => {

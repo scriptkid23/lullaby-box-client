@@ -310,9 +310,11 @@
 						}
 
 						.message-content {
+							max-width: 350px;
 							background: $style-color + 5;
 							border-radius: 7px;
 							padding: 10px 20px;
+							overflow-wrap: break-word;
 
 							&.message-file {
 								display: flex;
@@ -344,8 +346,10 @@
 							}
 
 							.message-content {
+								max-width: 350px;
 								background-color: $color-primary;
 								color: white;
+								overflow-wrap: break-word;
 							}
 						}
 					}

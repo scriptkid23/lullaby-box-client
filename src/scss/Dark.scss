@@ -110,9 +110,44 @@ body.dark {
 						.message-item {
 							&:not(.outgoing-message) {
 								.message-content {
+									max-width: 350px;
 									background-color: $dark-mode-light;
+									overflow-wrap: break-word;
 								}
 							}
+							&.outgoing-message{
+								.message-content{
+									background: linear-gradient(-45deg, #ffa63d, #ff3d77, #338aff, #3cf0c5);
+									-webkit-animation: anime 16s linear infinite;
+          							animation: anime 16s linear infinite;
+									  background-size: 600%;
+									  max-width: 350px;
+									  overflow-wrap: break-word;
+
+								}
+								@-webkit-keyframes anime {
+									0% {
+									  background-position: 0% 50%;
+									}
+									50% {
+									  background-position: 100% 50%;
+									}
+									100% {
+									  background-position: 0% 50%;
+									}
+								  }
+								  @keyframes anime {
+									0% {
+									  background-position: 0% 50%;
+									}
+									50% {
+									  background-position: 100% 50%;
+									}
+									100% {
+									  background-position: 0% 50%;
+									}
+								  }
+							}	
 
 							&.messages-divider:before {
 								background-color: $dark-mode-light;
@@ -258,5 +293,8 @@ body.dark {
 	a:not(.active.list-group-item), a:not(.btn):hover, a:not(.btn):active, a:not(.btn):focus {
 		color: rgba(white, .5);
 	}
+	.audio-controls path {
+		fill: #6d64ed;
+	}	  
 }
 

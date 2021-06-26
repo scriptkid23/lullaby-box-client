@@ -3,7 +3,7 @@ import ChatHeader from "./chat-header.component";
 import ChatFooter from "./chat-footer.component";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatContext } from "../../context/chat.context";
-
+import LottieGenerator from "../components/lottie-generator.component";
 
 export default function Chat() {
   const [scrollEl, setScrollEl] = useState();
@@ -20,17 +20,22 @@ export default function Chat() {
       }, 100);
     }
   });
-
   return (
     <div className="chat open">
+      {state.effectName === 'love' && <LottieGenerator path="https://assets8.lottiefiles.com/datafiles/nZgj7wTd56UtH6m/data.json"/>}
+      {state.effectName === 'hpbd' && <LottieGenerator path="https://assets2.lottiefiles.com/packages/lf20_u4yrau.json"/>}
+      {state.effectName === 'loki' && <LottieGenerator path="https://assets10.lottiefiles.com/packages/lf20_ocrcnofw.json"/>}
+      
       <React.Fragment>
         <ChatHeader room={state.room} />
+
         <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)}>
           <div className="chat-body">
             <div className="messages">
               {state.messages.map((value, index) => {
                 return (
                   <div
+                    key={value.id}
                     className={`message-item ${
                       state.owner === value.userId ? "outgoing-message" : " "
                     }`}
@@ -54,6 +59,7 @@ export default function Chat() {
             </div>
           </div>
         </PerfectScrollbar>
+
         <ChatFooter />
       </React.Fragment>
     </div>

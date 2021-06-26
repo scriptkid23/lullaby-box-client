@@ -20,7 +20,6 @@ function AddTrack() {
     const { data } = await Axios.get(baseUrl + "/audio", {
       params: { search: query },
     });
-    console.log(data);
     let result = [];
     for (let i in data) {
       result.push(data[i]);
@@ -32,7 +31,6 @@ function AddTrack() {
       return data.title !== value.title;
     });
     setList(filtered);
-    console.log(value);
     setTrack(value);
   };
   const handleSubmit = () => {

@@ -207,3 +207,10 @@ input[type="range"] {
   border: 3px solid #03256C;
   transition: background 0.2s ease;
 }
+.chat-effect-hide{
+  display: none;
+}
+.chat-effect{
+  position: absolute;
+  z-index: 999999;
+}
