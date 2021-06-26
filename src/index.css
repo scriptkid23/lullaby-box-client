@@ -212,4 +212,5 @@ input[type="range"] {
 }
 .chat-effect{
   position: absolute;
+  z-index: 999999;
 }

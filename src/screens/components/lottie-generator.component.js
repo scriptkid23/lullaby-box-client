@@ -1,9 +1,9 @@
 import React from "react";
 import lottie from "lottie-web";
-import { lottieEffect } from "../../assets";
+
 import { ChatContext } from "../../context/chat.context";
 
-export default function LottieGenerator() {
+export default function LottieGenerator(props) {
   const { state,actions } = React.useContext(ChatContext);
   const effect = React.useRef(null);
   const effectContainer = React.useRef(null);
@@ -18,7 +18,7 @@ export default function LottieGenerator() {
     effect.current = lottie.loadAnimation({
       wrapper: effectContainer.current,
       animType: 'svg',
-      path: 'https://assets2.lottiefiles.com/packages/lf20_u4yrau.json',
+      path: props.path,
       loop: false,
       autoplay: false,
       
@@ -29,6 +29,7 @@ export default function LottieGenerator() {
     });
   }, []);
   React.useEffect(() => {
+   
     if(state.effect){
       trigger();
     }

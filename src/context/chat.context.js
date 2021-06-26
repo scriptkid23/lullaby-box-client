@@ -5,7 +5,9 @@ import { SocketContext } from "./socket.context";
 import axios from "axios";
 import { baseUrl } from "../constants";
 const ChatContext = React.createContext({});
-
+// heart https://assets8.lottiefiles.com/datafiles/nZgj7wTd56UtH6m/data.json
+// conguration https://assets2.lottiefiles.com/packages/lf20_u4yrau.json
+// loki https://assets10.lottiefiles.com/packages/lf20_ocrcnofw.json
 class ChatProvider extends React.Component {
   static contextType = SocketContext;
   constructor() {
@@ -16,6 +18,7 @@ class ChatProvider extends React.Component {
       room: "",
       owner:localStorage.getItem("userId"),
       effect: false,
+      effectName:'',
     };
   }
   // receiverMessage = (data) => {
@@ -39,7 +42,13 @@ class ChatProvider extends React.Component {
   }
   updateMessages = (value) => {
     if(value.message.message === 'hpbd'){
-      this.setState({effect: true})
+      this.setState({effect: true,effectName: 'hpbd'})
+    }
+    if(value.message.message === 'love'){
+      this.setState({effect: true,effectName: 'love'})
+    }
+    if(value.message.message === 'loki'){
+      this.setState({effect: true,effectName: 'loki'})
     }
     this.setState({
       messages: [...this.state.messages, value.message],
@@ -70,6 +79,7 @@ class ChatProvider extends React.Component {
         messages: this.state.messages,
         owner: this.state.owner,
         effect: this.state.effect,
+        effectName: this.state.effectName,
       },
       actions: {
         leaveRoom: this.leaveRoom,

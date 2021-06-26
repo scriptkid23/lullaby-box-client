@@ -20,10 +20,12 @@ export default function Chat() {
       }, 100);
     }
   });
-
   return (
     <div className="chat open">
-      <LottieGenerator/>
+      {state.effectName === 'love' && <LottieGenerator path="https://assets8.lottiefiles.com/datafiles/nZgj7wTd56UtH6m/data.json"/>}
+      {state.effectName === 'hpbd' && <LottieGenerator path="https://assets2.lottiefiles.com/packages/lf20_u4yrau.json"/>}
+      {state.effectName === 'loki' && <LottieGenerator path="https://assets10.lottiefiles.com/packages/lf20_ocrcnofw.json"/>}
+      
       <React.Fragment>
         <ChatHeader room={state.room} />
 
