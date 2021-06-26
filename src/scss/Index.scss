@@ -12,7 +12,7 @@
 @import "Dark";
 @import "Other";
 @import "Rtl";
-
+@import "./Typing.scss";
 .layout {
 	height: 100vh;
 	height: calc(var(--vh, 1vh) * 100);

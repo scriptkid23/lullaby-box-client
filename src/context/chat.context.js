@@ -19,6 +19,9 @@ class ChatProvider extends React.Component {
       owner:localStorage.getItem("userId"),
       effect: false,
       effectName:'',
+      isTyping:false,
+      sender: '',
+      roomIcon: '',
     };
   }
   // receiverMessage = (data) => {
@@ -30,6 +33,7 @@ class ChatProvider extends React.Component {
     this.setState({
       messages: data.messages,
       room:data.name,
+      roomIcon:data.icon,
     })
    
   }
@@ -38,7 +42,17 @@ class ChatProvider extends React.Component {
     this.fetchData();
     state.socket && state.socket.receiverLeaveRoom(this.setStateIsLeaveRoom);
     state.socket && state.socket.receiverMessage(this.updateMessages);
+    state.socket && state.socket.receiverIsTyping(this.updateStateIsTyping);
     this.setState({ socket: state.socket });
+  }
+  updateStateIsTyping = (value) => {
+    this.setState({
+      isTyping: value.isTyping,
+      sender: value.sender,
+    })
+  }
+  sendIsTyping = (value) => {
+    this.state.socket.sendIsTyping(value);
   }
   updateMessages = (value) => {
     if(value.message.message === 'hpbd'){
@@ -52,6 +66,8 @@ class ChatProvider extends React.Component {
     }
     this.setState({
       messages: [...this.state.messages, value.message],
+      isTyping: false,
+      sender: '',
     })
   }
   sendMessage = (value) => {
@@ -76,11 +92,15 @@ class ChatProvider extends React.Component {
         owner: this.state.owner,
         effect: this.state.effect,
         effectName: this.state.effectName,
+        isTyping: this.state.isTyping,
+        sender: this.state.sender,
+        roomIcon: this.state.roomIcon,
       },
       actions: {
         leaveRoom: this.leaveRoom,
         sendMessage: this.sendMessage,
         setStateEffect: this.setStateEffect,
+        sendIsTyping: this.sendIsTyping,
       },
     };
     return (

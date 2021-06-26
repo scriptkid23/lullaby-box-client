@@ -7,6 +7,23 @@ import { v4 as uuidv4 } from "uuid";
 export default function ChatFooter() {
   const [message, setMessage] = React.useState("");
   const {state, actions} = React.useContext(ChatContext);
+  const handleSetMessage = (value) => {
+    setMessage(value)
+    if(value.length > 0){
+      actions.sendIsTyping({
+        roomId: localStorage.getItem("roomId"),
+        sender: localStorage.getItem("userId"),
+        isTyping:true,
+      })
+    }
+    else{
+      actions.sendIsTyping({
+        roomId: localStorage.getItem("roomId"),
+        sender: localStorage.getItem("userId"),
+        isTyping:false,
+      })
+    }
+  }
   const handleSendMessage = (e) => {
     e.preventDefault()
     if(message.length > 0){
@@ -37,7 +54,7 @@ export default function ChatFooter() {
           value={message}
           className="form-control"
           placeholder="Write a message."
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => handleSetMessage(e.target.value)}
         />
         <div className="form-buttons">
           <Button type="button" color="primary" onClick={handleSendMessage}>

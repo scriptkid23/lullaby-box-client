@@ -5,17 +5,16 @@ import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router";
-import { SocketContext } from "../../context/socket.context";
 import Axios from "axios";
 import { baseUrl } from "../../constants";
 import SelectAvatar from "./select-avatar.component";
+import SelectRoomIcon from './select-room-icon.component';
 export default function CreateRoomComponent() {
   const [show, setShow] = useState(false);
   const { register, handleSubmit } = useForm();
   const history = useHistory();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const { state, actions } = React.useContext(SocketContext);
   const copyId = () => {
     /* Get the text field */
     var copyText = document.getElementById("roomId");
@@ -30,11 +29,12 @@ export default function CreateRoomComponent() {
     /* Alert the copied text */
   };
   const onSubmit = async (data) => {
-    if (localStorage.getItem("avatar").length > 0) {
+    if (localStorage.getItem("avatar") && localStorage.getItem('roomIcon')) {
       let userId = uuidv4();
       let result = await Axios.post(baseUrl + "/room/create", {
         roomId: data.roomId,
         name: data.room,
+        icon: localStorage.getItem('roomIcon')
       });
       if (result) {
         Axios.post(baseUrl + "/room/join", {
@@ -89,6 +89,10 @@ export default function CreateRoomComponent() {
                 type="text"
                 placeholder="Enter your room."
               />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Room Icon</Form.Label>
+              <SelectRoomIcon />
             </Form.Group>
             <Form.Group>
               <Form.Label>Room Id</Form.Label>
