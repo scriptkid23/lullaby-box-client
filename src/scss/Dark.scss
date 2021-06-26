@@ -110,7 +110,9 @@ body.dark {
 						.message-item {
 							&:not(.outgoing-message) {
 								.message-content {
+									max-width: 350px;
 									background-color: $dark-mode-light;
+									overflow-wrap: break-word;
 								}
 							}
 							&.outgoing-message{
@@ -119,6 +121,8 @@ body.dark {
 									-webkit-animation: anime 16s linear infinite;
           							animation: anime 16s linear infinite;
 									  background-size: 600%;
+									  max-width: 350px;
+									  overflow-wrap: break-word;
 
 								}
 								@-webkit-keyframes anime {

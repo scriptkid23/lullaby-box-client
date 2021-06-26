@@ -3,7 +3,7 @@ import ChatHeader from "./chat-header.component";
 import ChatFooter from "./chat-footer.component";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatContext } from "../../context/chat.context";
-
+import LottieGenerator from "../components/lottie-generator.component";
 
 export default function Chat() {
   const [scrollEl, setScrollEl] = useState();
@@ -23,8 +23,10 @@ export default function Chat() {
 
   return (
     <div className="chat open">
+        {/* <LottieGenerator/> */}
       <React.Fragment>
         <ChatHeader room={state.room} />
+
         <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)}>
           <div className="chat-body">
             <div className="messages">
@@ -52,8 +54,11 @@ export default function Chat() {
                 );
               })}
             </div>
+            {/* <div>123</div> */}
+          
           </div>
         </PerfectScrollbar>
+
         <ChatFooter />
       </React.Fragment>
     </div>
