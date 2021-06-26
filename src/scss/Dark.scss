@@ -1,9 +1,9 @@
-$dark-mode: #1a2236;
+$dark-mode: #1c1f2a;
 $dark-mode-light: $dark-mode + 15;
 
 body.dark {
 	background-color: $dark-mode;
-	color: rgba(white, .75);
+	color: #efefef;
 
 	.reactour__helper {
 		background: $dark-mode-light;
@@ -258,5 +258,8 @@ body.dark {
 	a:not(.active.list-group-item), a:not(.btn):hover, a:not(.btn):active, a:not(.btn):focus {
 		color: rgba(white, .5);
 	}
+	.audio-controls path {
+		fill: #6d64ed;
+	}	  
 }
 
