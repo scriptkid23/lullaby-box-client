@@ -21,6 +21,6 @@ export const unicorn = [
   unicorn029,
   unicorn047,
 ];
-export const lottie = {
+export const lottieEffect = {
   congratulation: conguratulation,
 }

@@ -4,8 +4,6 @@ import { SocketContext } from "../context/socket.context";
 import { ChatProvider } from "../context/chat.context";
 import Chat from "./components/chat.component";
 import Panel from "./components/panel.component";
-import { DataProvider } from "../context/data.context";
-
 export default function HomeScreen() {
   const { state, actions } = React.useContext(SocketContext);
   React.useEffect(() => {

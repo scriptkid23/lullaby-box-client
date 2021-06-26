@@ -23,7 +23,7 @@ export default function Chat() {
 
   return (
     <div className="chat open">
-        {/* <LottieGenerator/> */}
+      <LottieGenerator/>
       <React.Fragment>
         <ChatHeader room={state.room} />
 
@@ -33,6 +33,7 @@ export default function Chat() {
               {state.messages.map((value, index) => {
                 return (
                   <div
+                    key={value.id}
                     className={`message-item ${
                       state.owner === value.userId ? "outgoing-message" : " "
                     }`}
@@ -54,8 +55,6 @@ export default function Chat() {
                 );
               })}
             </div>
-            {/* <div>123</div> */}
-          
           </div>
         </PerfectScrollbar>
 

@@ -15,6 +15,7 @@ class ChatProvider extends React.Component {
       messages: [],
       room: "",
       owner:localStorage.getItem("userId"),
+      effect: false,
     };
   }
   // receiverMessage = (data) => {
@@ -37,6 +38,9 @@ class ChatProvider extends React.Component {
     this.setState({ socket: state.socket });
   }
   updateMessages = (value) => {
+    if(value.message.message === 'hpbd'){
+      this.setState({effect: true})
+    }
     this.setState({
       messages: [...this.state.messages, value.message],
     })
@@ -54,6 +58,9 @@ class ChatProvider extends React.Component {
     console.log("Leave Room");
     console.log(value);
   };
+  setStateEffect = (value) => {
+    this.setState({effect: value})
+  }
 
   render() {
     const value = {
@@ -62,10 +69,12 @@ class ChatProvider extends React.Component {
         room: this.state.room,
         messages: this.state.messages,
         owner: this.state.owner,
+        effect: this.state.effect,
       },
       actions: {
         leaveRoom: this.leaveRoom,
         sendMessage: this.sendMessage,
+        setStateEffect: this.setStateEffect,
       },
     };
     return (
