@@ -55,7 +55,12 @@ class SocketService {
   receiverMessage = (callback) => {
     this.socket.on("RECEIVER_MESSAGE",callback);
   }
-
+  sendIsSeen = (value) => {
+    this.socket.emit('SEND_IS_SEEN',value)
+  }
+  receiverIsSeen = (callback) => {
+    this.socket.on('RECEIVER_IS_SEEN',callback);
+  }
   disconnect = () => {
     this.socket.disconnect();
   };
