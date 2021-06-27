@@ -97,7 +97,7 @@ function AddTrack() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleSubmit}>
-            Let'go
+            Listen
           </Button>
         </Modal.Footer>
       </Modal>
