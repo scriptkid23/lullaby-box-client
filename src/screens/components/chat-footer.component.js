@@ -53,7 +53,6 @@ export default function ChatFooter() {
     setMessage("");
   };
   const handleFocus = (e) => {
-    console.log(state);
     actions.sendIsSeen({
       roomId: localStorage.getItem("roomId"),
       participant: {
