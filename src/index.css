@@ -224,3 +224,8 @@ input[type="range"] {
 .room-icon-active{
   border: 3px solid #03256C ;
 }
+.list-track-body{
+  flex: 1 1;
+  overflow: auto;
+  height: 235px;
+}
