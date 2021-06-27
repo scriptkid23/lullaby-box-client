@@ -1,9 +1,21 @@
 import React from "react";
 import { Button, Input } from "reactstrap";
 import * as FeatherIcon from "react-feather";
-import { useForm } from "react-hook-form";
 import {ChatContext} from '../../context/chat.context'
 import { v4 as uuidv4 } from "uuid";
+import { toArray } from "react-emoji-render";
+const parseEmojis = value => {
+  const emojisArray = toArray(value);
+  
+  const newValue = emojisArray.reduce((previous, current) => {
+    if (typeof current === "string") {
+      return previous + current;
+    }
+    return previous + current.props.children;
+  }, "");
+
+  return newValue;
+};
 export default function ChatFooter() {
   const [message, setMessage] = React.useState("");
   const {state, actions} = React.useContext(ChatContext);
@@ -34,7 +46,7 @@ export default function ChatFooter() {
           userId: localStorage.getItem("userId"),
           name: localStorage.getItem("name"),
           avatar: localStorage.getItem("avatar"),
-          message: message,
+          message: parseEmojis(message),
         }
       }
       actions.sendMessage(request);
@@ -44,11 +56,6 @@ export default function ChatFooter() {
   return (
     <div className="chat-footer">
       <form onSubmit={e => handleSendMessage(e)}>
-        <div>
-          <Button color="light" className="mr-3" title="Emoji">
-            <FeatherIcon.Smile />
-          </Button>
-        </div>
         <Input
           type="text"   
           value={message}
