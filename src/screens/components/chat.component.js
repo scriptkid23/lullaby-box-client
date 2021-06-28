@@ -18,6 +18,24 @@ export default function Chat() {
   //     scrollEl.scrollTop = scrollEl.scrollHeight;
   //   }
   // });
+  const exportSeen = (data) => {
+
+    if(data.length  < 4){
+      return data.map(
+        (value,index) => value.name
+      ).join(', ')
+    }
+    else {
+      let result = []
+      for(let i in data){
+        if(i < 3){
+          result.push(data[i].name)
+        }
+      }
+      return result.join(', ') +'...'
+    }
+   
+  }
   return (
     <div className="chat open">
       {state.effectName === "love" && (
@@ -50,15 +68,13 @@ export default function Chat() {
                           alt="avatar"
                         />
                       </figure>
-                      <div>
+                      <div style={{maxWidth:'127px'}}>
                         <h5>{value.name}</h5>
                         {state.lastMessage.id === value.id &&
                           state.lastMessage.seenby.length > 0 && (
-                            <span className="time">
+                            <span className="time text-wrap text-break">
                               seen by{" "}
-                              {state.lastMessage.seenby.map(
-                                (value,index) => value.name+', '
-                              )}
+                              {exportSeen(state.lastMessage.seenby)}
                             </span>
                           )}
                       </div>
