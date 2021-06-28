@@ -36,16 +36,20 @@ class ChatProvider extends React.Component {
   //   this.setState({ trackProgress: data.trackProgress });
   // };
   fetchData = async () => {
-    let { data } = await axios.get(
-      baseUrl + "/room/" + localStorage.getItem("roomId")
-    );
+    try {
+      let { data } = await axios.get(
+        baseUrl + "/room/" + localStorage.getItem("roomId")
+      );
 
-    this.setState({
-      messages: data.messages,
-      room: data.name,
-      roomIcon: data.icon,
-      lastMessage: data.lastMessage,
-    });
+      this.setState({
+        messages: data.messages,
+        room: data.name,
+        roomIcon: data.icon,
+        lastMessage: data.lastMessage,
+      });
+    } catch (e) {
+      localStorage.clear();
+    }
   };
   componentDidMount() {
     const { state, actions } = this.context;
@@ -73,7 +77,7 @@ class ChatProvider extends React.Component {
       this.setState({
         lastMessage: {
           ...this.state.lastMessage,
-          seenby: [data.participant,...this.state.lastMessage.seenby],
+          seenby: [data.participant, ...this.state.lastMessage.seenby],
         },
       });
     }
