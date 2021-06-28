@@ -52,11 +52,17 @@ class PanelProvider extends React.Component {
     // }
   };
   fetchData = async() => {
-    let {data} = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
-    this.setState({
-      participants: [...data.participants],
-      tracks:[...this.state.tracks,...data.tracks],
-    })
+    try{
+      let {data} = await axios.get(baseUrl+'/room/'+localStorage.getItem('roomId'));
+      this.setState({
+        participants: [...data.participants],
+        tracks:[...this.state.tracks,...data.tracks],
+      })
+    }
+    catch(e){
+      localStorage.clear();
+    }
+ 
    
   }
   setStateIsLeaveRoom = (data) => {
