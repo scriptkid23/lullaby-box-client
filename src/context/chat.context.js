@@ -73,7 +73,7 @@ class ChatProvider extends React.Component {
       this.setState({
         lastMessage: {
           ...this.state.lastMessage,
-          seenby: [...this.state.lastMessage.seenby, data.participant],
+          seenby: [data.participant,...this.state.lastMessage.seenby],
         },
       });
     }
