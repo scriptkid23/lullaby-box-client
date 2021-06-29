@@ -5,9 +5,10 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatContext } from "../../context/chat.context";
 import LottieGenerator from "../components/lottie-generator.component";
 import Typing from "./typing.component";
+import LottieEffect from "./effect.component";
 export default function Chat() {
   const [scrollEl, setScrollEl] = useState();
-  const { state } = React.useContext(ChatContext);
+  const { state, actions } = React.useContext(ChatContext);
   useEffect(() => {
     if (scrollEl) {
       scrollEl.scrollTop = scrollEl.scrollHeight;
@@ -19,34 +20,26 @@ export default function Chat() {
   //   }
   // });
   const exportSeen = (data) => {
-
-    if(data.length  < 4){
-      return data.map(
-        (value,index) => value.name
-      ).join(', ')
-    }
-    else {
-      let result = []
-      for(let i in data){
-        if(i < 3){
-          result.push(data[i].name)
+    if (data.length < 4) {
+      return data.map((value, index) => value.name).join(", ");
+    } else {
+      let result = [];
+      for (let i in data) {
+        if (i < 3) {
+          result.push(data[i].name);
         }
       }
-      return result.join(', ') +'...'
+      return result.join(", ") + "...";
     }
-   
-  }
+  };
   return (
     <div className="chat open">
-      {state.effectName === "love" && (
-        <LottieGenerator path="https://assets8.lottiefiles.com/datafiles/nZgj7wTd56UtH6m/data.json" />
-      )}
-      {state.effectName === "hpbd" && (
-        <LottieGenerator path="https://assets2.lottiefiles.com/packages/lf20_u4yrau.json" />
-      )}
-      {state.effectName === "loki" && (
-        <LottieGenerator path="https://assets10.lottiefiles.com/packages/lf20_ocrcnofw.json" />
-      )}
+      <LottieEffect
+        effect = {state.effect}
+        actions={actions}
+        effects={state.effects}
+        effectName={state.effectName}
+      />
       <React.Fragment>
         <ChatHeader room={state.room} roomIcon={state.roomIcon} />
         <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)}>
@@ -73,8 +66,7 @@ export default function Chat() {
                         {state.lastMessage.id === value.id &&
                           state.lastMessage.seenby.length > 0 && (
                             <span className="time text-wrap text-break">
-                              seen by{" "}
-                              {exportSeen(state.lastMessage.seenby)}
+                              seen by {exportSeen(state.lastMessage.seenby)}
                             </span>
                           )}
                       </div>
