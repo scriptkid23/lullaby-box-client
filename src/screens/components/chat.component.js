@@ -68,7 +68,7 @@ export default function Chat() {
                           alt="avatar"
                         />
                       </figure>
-                      <div style={{maxWidth:'127px'}}>
+                      <div>
                         <h5>{value.name}</h5>
                         {state.lastMessage.id === value.id &&
                           state.lastMessage.seenby.length > 0 && (
