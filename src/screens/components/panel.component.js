@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import AudioControls from "../../audio/audio.control";
-
+import _ from 'lodash';
 import { Badge } from "reactstrap";
 
 import AddTrack from "../../track/add.track";
@@ -114,7 +114,17 @@ export default function Panel() {
       clearInterval(intervalRef.current);
     };
   }, []);
-
+  const  arrUnique = (arr) => {
+    var cleaned = [];
+    arr.forEach(function(item) {
+        var unique = true;
+        cleaned.forEach(function(item2) {
+            if (_.isEqual(item, item2)) unique = false;
+        });
+        if (unique)  cleaned.push(item);
+    });
+    return cleaned;
+}
   return (
     <div className={`sidebar-group`}>
       <div className="sidebar active">
@@ -159,7 +169,7 @@ export default function Panel() {
             </div>
             <div className="d-flex flex-wrap justify-content-center">
               {state.participants &&
-                state.participants.map((value, index) => {
+                arrUnique(state.participants).map((value, index) => {
                   return (
                     <Badge className="m-2" color="primary" key={value.userId}>
                       {value.name}
