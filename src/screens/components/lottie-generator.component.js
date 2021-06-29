@@ -21,7 +21,6 @@ export default function LottieGenerator(props) {
       path: props.path,
       loop: false,
       autoplay: false,
-      
     });
 
     effect.current.addEventListener("complete", () => {
