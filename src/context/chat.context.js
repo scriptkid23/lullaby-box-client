@@ -67,19 +67,21 @@ class ChatProvider extends React.Component {
     });
   };
   updateStateLastMessage = (data) => {
-    const index = this.state.lastMessage.seenby.findIndex((value) => {
-      return value.userId === data.participant.userId;
-    });
-    if (
-      (this.state.lastMessage.seenby.length === 0 || index === -1) &&
-      data.participant.userId !== this.state.lastMessage.userId
-    ) {
-      this.setState({
-        lastMessage: {
-          ...this.state.lastMessage,
-          seenby: [data.participant, ...this.state.lastMessage.seenby],
-        },
+    if (this.state.lastMessage) {
+      const index = this.state.lastMessage.seenby.findIndex((value) => {
+        return value.userId === data.participant.userId;
       });
+      if (
+        (this.state.lastMessage.seenby.length === 0 || index === -1) &&
+        data.participant.userId !== this.state.lastMessage.userId
+      ) {
+        this.setState({
+          lastMessage: {
+            ...this.state.lastMessage,
+            seenby: [data.participant, ...this.state.lastMessage.seenby],
+          },
+        });
+      }
     }
   };
   sendIsSeen = (value) => {
