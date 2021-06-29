@@ -30,13 +30,10 @@ export default function LottieGenerator(props) {
     });
   }, []);
   React.useEffect(() => {
-   console.log(props.effect)
     if(props.effect){
-      console.log("trigger");
       trigger();
     } 
   },[props.effect])
-  // console.log("lottie generator");
   return (
     <React.Fragment>
       <div className="chat-effect chat-effect-hide" id="chat-effect"></div>
