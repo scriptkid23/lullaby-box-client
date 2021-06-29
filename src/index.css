@@ -211,6 +211,8 @@ input[type="range"] {
   display: none;
 }
 .chat-effect{
+  width: 800px;
+  height: 800px;
   position: absolute;
   z-index: 999999;
 }

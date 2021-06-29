@@ -1,10 +1,10 @@
 import React from "react";
 import lottie from "lottie-web";
 
-import { ChatContext } from "../../context/chat.context";
+
 
 export default function LottieGenerator(props) {
-  const { state,actions } = React.useContext(ChatContext);
+
   const effect = React.useRef(null);
   const effectContainer = React.useRef(null);
   
@@ -21,22 +21,18 @@ export default function LottieGenerator(props) {
       path: props.path,
       loop: false,
       autoplay: false,
-      
     });
 
     effect.current.addEventListener("complete", () => {
       effectContainer.current.classList.add("chat-effect-hide");
+      props.actions.setStateEffect(false);
     });
   }, []);
   React.useEffect(() => {
-   
-    if(state.effect){
+    if(props.effect){
       trigger();
-    }
-    return () => {actions.setStateEffect(false)}
-    
-  },[state.effect])
-
+    } 
+  },[props.effect])
   return (
     <React.Fragment>
       <div className="chat-effect chat-effect-hide" id="chat-effect"></div>

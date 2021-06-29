@@ -42,14 +42,9 @@ class PanelProvider extends React.Component {
   // }
   
   setStateJoinRoom = (data) => {
-    // let index = this.state.participants.findIndex((value, index) => {
-    //   return value.userId === data.participant.userId;
-    // });
-    // if (index !== -1) {
       this.setState({
         participants: [...this.state.participants, data.participant],
       });
-    // }
   };
   fetchData = async() => {
     try{

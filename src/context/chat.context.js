@@ -5,15 +5,14 @@ import { SocketContext } from "./socket.context";
 import axios from "axios";
 import { baseUrl } from "../constants";
 const ChatContext = React.createContext({});
-// heart https://assets8.lottiefiles.com/datafiles/nZgj7wTd56UtH6m/data.json
-// conguration https://assets2.lottiefiles.com/packages/lf20_u4yrau.json
-// loki https://assets10.lottiefiles.com/packages/lf20_ocrcnofw.json
+
 class ChatProvider extends React.Component {
   static contextType = SocketContext;
   constructor() {
     super();
     this.state = {
       socket: null,
+      effects: [],
       messages: [],
       room: "",
       owner: localStorage.getItem("userId"),
@@ -32,20 +31,18 @@ class ChatProvider extends React.Component {
       },
     };
   }
-  // receiverMessage = (data) => {
-  //   this.setState({ trackProgress: data.trackProgress });
-  // };
   fetchData = async () => {
     try {
-      let { data } = await axios.get(
-        baseUrl + "/room/" + localStorage.getItem("roomId")
-      );
-
+      const requestFetchData = axios.get(baseUrl + "/room/" + localStorage.getItem("roomId"));
+      const requestFetchEffectScreen = axios.get(baseUrl + "/user/get/effect-screen");
+      let result = await axios.all([requestFetchData, requestFetchEffectScreen]);
+      let { data } = result[0];
       this.setState({
         messages: data.messages,
         room: data.name,
         roomIcon: data.icon,
         lastMessage: data.lastMessage,
+        effects:result[1].data
       });
     } catch (e) {
       localStorage.clear();
@@ -90,22 +87,19 @@ class ChatProvider extends React.Component {
   sendIsTyping = (value) => {
     this.state.socket.sendIsTyping(value);
   };
-  updateMessages = (value) => {
-    if (value.message.message === "hpbd") {
-      this.setState({ effect: true, effectName: "hpbd" });
-    }
-    if (value.message.message === "love") {
-      this.setState({ effect: true, effectName: "love" });
-    }
-    if (value.message.message === "loki") {
-      this.setState({ effect: true, effectName: "loki" });
+  updateMessages = (data) => {
+    let index = this.state.effects.findIndex((value) => {
+      return value.keywork === data.message.message;
+    })
+    if(index !== -1 ){
+      this.setState({effect:true, effectName: data.message.message})
     }
     this.setState({
-      messages: [...this.state.messages, value.message],
+      messages: [...this.state.messages, data.message],
       isTyping: false,
       sender: "",
       lastMessage: {
-        ...value.message,
+        ...data.message,
         seenby: [],
       },
     });
@@ -125,6 +119,7 @@ class ChatProvider extends React.Component {
   render() {
     const value = {
       state: {
+        effects: this.state.effects,
         socket: this.state.socket,
         room: this.state.room,
         messages: this.state.messages,
