@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Form, InputGroup } from "react-bootstrap";
+import { Modal, Button, Form, InputGroup, Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,9 +8,10 @@ import { useHistory } from "react-router";
 import Axios from "axios";
 import { baseUrl } from "../../constants";
 import SelectAvatar from "./select-avatar.component";
-import SelectRoomIcon from './select-room-icon.component';
+import SelectRoomIcon from "./select-room-icon.component";
 export default function CreateRoomComponent() {
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
   const history = useHistory();
   const handleClose = () => setShow(false);
@@ -29,29 +30,37 @@ export default function CreateRoomComponent() {
     /* Alert the copied text */
   };
   const onSubmit = async (data) => {
-    if (localStorage.getItem("avatar") && localStorage.getItem('roomIcon')) {
-      let userId = uuidv4();
-      let result = await Axios.post(baseUrl + "/room/create", {
-        roomId: data.roomId,
-        name: data.room,
-        icon: localStorage.getItem('roomIcon')
-      });
-      if (result) {
-        Axios.post(baseUrl + "/room/join", {
+    setLoading(true);
+    try {
+      if (localStorage.getItem("avatar") && localStorage.getItem("roomIcon")) {
+        let userId = uuidv4();
+        let result = await Axios.post(baseUrl + "/room/create", {
           roomId: data.roomId,
-          participant: {
-            userId: userId,
-            name: data.name,
-            avatar: localStorage.getItem("avatar"),
-          },
+          name: data.room,
+          icon: localStorage.getItem("roomIcon"),
         });
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("name", data.name);
-        localStorage.setItem("room", data.room);
-        // localStorage.setItem("avatar", data.avatar);
-        localStorage.setItem("roomId", data.roomId);
-        history.push("/room/" + data.roomId);
+        if (result) {
+          setLoading(false);
+          Axios.post(baseUrl + "/room/join", {
+            roomId: data.roomId,
+            participant: {
+              userId: userId,
+              name: data.name,
+              avatar: localStorage.getItem("avatar"),
+            },
+          });
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("name", data.name);
+          localStorage.setItem("room", data.room);
+          // localStorage.setItem("avatar", data.avatar);
+          localStorage.setItem("roomId", data.roomId);
+          history.push("/room/" + data.roomId);
+        }
+      } else {
+        setLoading(false);
       }
+    } catch (e) {
+      setLoading(false);
     }
   };
   return (
@@ -126,7 +135,11 @@ export default function CreateRoomComponent() {
             Close
           </Button>
           <Button variant="primary" onClick={handleSubmit(onSubmit)}>
-            Create
+            {loading ? (
+              <Spinner animation="border" variant="light" size={"sm"} />
+            ) : (
+              "Create Room"
+            )}
           </Button>
         </Modal.Footer>
       </Modal>

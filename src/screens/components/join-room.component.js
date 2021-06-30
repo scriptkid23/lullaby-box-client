@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Modal, Button, Form, InputGroup } from "react-bootstrap";
-import {Alert} from 'reactstrap'
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
+import { Alert } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
@@ -10,17 +10,17 @@ import axios from "axios";
 import { baseUrl } from "../../constants";
 import SelectAvatar from "./select-avatar.component";
 const AlertJoinRoom = (props) => {
-
   return (
     <Alert color="danger" isOpen={props.visible}>
       {props.alert}
     </Alert>
   );
-}
+};
 
 export default function JoinRoomComponent() {
   const [show, setShow] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState("");
   const { actions } = React.useContext(SocketContext);
   const { register, handleSubmit } = useForm();
@@ -29,10 +29,12 @@ export default function JoinRoomComponent() {
   const handleShow = () => setShow(true);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     let isExist = await axios.get(baseUrl + "/room/check/" + data.roomId);
     if (!isExist.data) {
       setVisible(true);
-      setAlert("Room not exist 😅")
+      setLoading(false);
+      setAlert("Room not exist 😅");
       return;
     }
     if (
@@ -52,14 +54,15 @@ export default function JoinRoomComponent() {
       localStorage.setItem("name", data.name);
       // localStorage.setItem("avatar", data.avatar);
       localStorage.setItem("roomId", data.roomId);
-      history.push("/room/"+data.roomId);
+      history.push("/room/" + data.roomId);
       setVisible(false);
+      setLoading(false);
       setAlert("");
-    }else{
+    } else {
       setVisible(true);
-      setAlert('Please select avatar 😉')
+      setLoading(false);
+      setAlert("Please select avatar 😉");
     }
-
   };
   return (
     <>
@@ -102,17 +105,18 @@ export default function JoinRoomComponent() {
               <SelectAvatar />
             </Form.Group>
           </Form>
-          <AlertJoinRoom
-            visible={visible}
-            alert={alert}
-          />
+          <AlertJoinRoom visible={visible} alert={alert} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={handleSubmit(onSubmit)}>
-            Join
+            {loading ? (
+              <Spinner animation="border" variant="light" size={"sm"} />
+            ) : (
+              "Join"
+            )}
           </Button>
         </Modal.Footer>
       </Modal>
