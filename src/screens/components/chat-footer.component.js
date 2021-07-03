@@ -46,6 +46,8 @@ export default function ChatFooter() {
           name: localStorage.getItem("name"),
           avatar: localStorage.getItem("avatar"),
           message: parseEmojis(message),
+          replyId: state.replyId,
+          replyMessage: state.replyMessage,
         },
       };
       actions.sendMessage(request);
@@ -64,14 +66,25 @@ export default function ChatFooter() {
   return (
     <div className="chat-footer">
       <form onSubmit={(e) => handleSendMessage(e)}>
-        <Input
-          type="text"
-          value={message}
-          onFocus={handleFocus}
-          className="form-control"
-          placeholder="Write a message."
-          onChange={(e) => handleSetMessage(e.target.value)}
-        />
+        <ul className="chat-footer-input-container form-control">
+          {state.replyId && (
+            <li className="reply-old-message badge badge-primary">
+              <span>
+                {state.replyMessage.length > 12
+                  ? state.replyMessage.split(" ", 3).join(" ") + "..."
+                  : state.replyMessage}
+              </span>
+            </li>
+          )}
+          <input
+            type="text"
+            value={message}
+            onFocus={handleFocus}
+            className="chat-footer-input"
+            placeholder="Write a message."
+            onChange={(e) => handleSetMessage(e.target.value)}
+          />
+        </ul>
         <div className="form-buttons">
           <Button type="button" color="primary" onClick={handleSendMessage}>
             <FeatherIcon.Send />

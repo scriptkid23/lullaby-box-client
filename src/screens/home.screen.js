@@ -7,6 +7,7 @@ import Panel from "./components/panel.component";
 export default function HomeScreen() {
   const { state, actions } = React.useContext(SocketContext);
   React.useEffect(() => {
+    document.body.classList.toggle("dark");
     actions.joinRoom({
       roomId: localStorage.getItem("roomId"),
       participant: {

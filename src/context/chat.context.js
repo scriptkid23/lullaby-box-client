@@ -15,6 +15,8 @@ class ChatProvider extends React.Component {
       effects: [],
       messages: [],
       room: "",
+      replyId: "",
+      replyMessage: "",
       owner: localStorage.getItem("userId"),
       effect: false,
       effectName: "",
@@ -56,6 +58,12 @@ class ChatProvider extends React.Component {
     state.socket && state.socket.receiverIsTyping(this.updateStateIsTyping);
     state.socket && state.socket.receiverIsSeen(this.updateStateLastMessage);
     this.setState({ socket: state.socket });
+  }
+  replyOldMessage = (value) => {
+    this.setState({
+      replyId: value.id,
+      replyMessage: value.message
+    })
   }
   updateStateIsTyping = (value) => {
     this.setState({
@@ -105,6 +113,10 @@ class ChatProvider extends React.Component {
     });
   };
   sendMessage = (value) => {
+    this.setState({
+      replyId: "",
+      replyMessage: "",
+    })
     this.state.socket.sendMessage(value);
   };
 
@@ -130,6 +142,8 @@ class ChatProvider extends React.Component {
         sender: this.state.sender,
         roomIcon: this.state.roomIcon,
         lastMessage: this.state.lastMessage,
+        replyId: this.state.replyId,
+        replyMessage: this.state.replyMessage,
       },
       actions: {
         leaveRoom: this.leaveRoom,
@@ -137,6 +151,7 @@ class ChatProvider extends React.Component {
         setStateEffect: this.setStateEffect,
         sendIsTyping: this.sendIsTyping,
         sendIsSeen: this.sendIsSeen,
+        replyOldMessage: this.replyOldMessage,
       },
     };
     return (

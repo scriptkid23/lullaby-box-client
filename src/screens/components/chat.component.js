@@ -3,7 +3,6 @@ import ChatHeader from "./chat-header.component";
 import ChatFooter from "./chat-footer.component";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatContext } from "../../context/chat.context";
-import LottieGenerator from "../components/lottie-generator.component";
 import Typing from "./typing.component";
 import LottieEffect from "./effect.component";
 export default function Chat() {
@@ -35,7 +34,7 @@ export default function Chat() {
   return (
     <div className="chat open">
       <LottieEffect
-        effect = {state.effect}
+        effect={state.effect}
         actions={actions}
         effects={state.effects}
         effectName={state.effectName}
@@ -48,8 +47,14 @@ export default function Chat() {
               {state.messages.map((value, index) => {
                 return (
                   <div
+                    onClick={() =>
+                      actions.replyOldMessage({
+                        id: value.id,
+                        message: value.message,
+                      })
+                    }
                     key={value.id}
-                    className={`message-item ${
+                    className={`message-item pointer ${
                       state.owner === value.userId ? "outgoing-message" : " "
                     }`}
                   >
@@ -71,7 +76,22 @@ export default function Chat() {
                           )}
                       </div>
                     </div>
-                    <div className="message-content">{value.message}</div>
+
+                    <div className="message-content">
+                      {value.replyId.length > 0 && (
+                        <>
+                          <span className="reply-message-content">
+                            {value.replyMessage.length > 12
+                              ? value.replyMessage.split(" ", 3).join(" ") +
+                                "..."
+                              : value.replyMessage}
+                          </span>
+                          <br />
+                        </>
+                      )}
+
+                      {value.message}
+                    </div>
                   </div>
                 );
               })}
