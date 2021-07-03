@@ -68,10 +68,13 @@ export default function ChatFooter() {
       <form onSubmit={(e) => handleSendMessage(e)}>
         <ul className="chat-footer-input-container form-control">
           {state.replyId && (
-            <li className="reply-old-message badge badge-primary">
+            <li
+              className="reply-old-message badge badge-primary pointer"
+              onClick={actions.removeTagOldMessage}
+            >
               <span>
                 {state.replyMessage.length > 12
-                  ? state.replyMessage.split(" ", 3).join(" ") + "..."
+                  ? state.replyMessage.substr(0, 12) + "..."
                   : state.replyMessage}
               </span>
             </li>

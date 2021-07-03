@@ -82,8 +82,7 @@ export default function Chat() {
                         <>
                           <span className="reply-message-content">
                             {value.replyMessage.length > 12
-                              ? value.replyMessage.split(" ", 3).join(" ") +
-                                "..."
+                              ? value.replyMessage.substr(0, 12) + "..."
                               : value.replyMessage}
                           </span>
                           <br />

@@ -127,7 +127,12 @@ class ChatProvider extends React.Component {
   setStateEffect = (value) => {
     this.setState({ effect: value });
   };
-
+  removeTagOldMessage = () => {
+    this.setState({
+      replyId: "",
+      replyMessage:"",
+    })
+  }
   render() {
     const value = {
       state: {
@@ -152,6 +157,7 @@ class ChatProvider extends React.Component {
         sendIsTyping: this.sendIsTyping,
         sendIsSeen: this.sendIsSeen,
         replyOldMessage: this.replyOldMessage,
+        removeTagOldMessage: this.removeTagOldMessage,
       },
     };
     return (
