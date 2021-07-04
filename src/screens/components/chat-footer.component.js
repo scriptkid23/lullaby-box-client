@@ -19,6 +19,7 @@ const parseEmojis = (value) => {
 export default function ChatFooter() {
   const [message, setMessage] = React.useState("");
   const { state, actions } = React.useContext(ChatContext);
+  const inputRef = React.useRef(null);
   const handleSetMessage = (value) => {
     setMessage(value);
     if (value.length > 0) {
@@ -46,6 +47,7 @@ export default function ChatFooter() {
           name: localStorage.getItem("name"),
           avatar: localStorage.getItem("avatar"),
           message: parseEmojis(message),
+          type: "text",
           replyId: state.replyId,
           replyMessage: state.replyMessage,
         },
@@ -63,6 +65,28 @@ export default function ChatFooter() {
       },
     });
   };
+  React.useEffect(() => {
+   
+    inputRef.current.addEventListener("paste", (event) => {
+      const items = event.clipboardData.items;
+      for (var i = 0; i < items.length; i++) {
+        // Skip content if not image
+        if (items[i].type.indexOf("image") == -1) continue;
+        // Retrieve image on clipboard as blob
+        var blob = items[i].getAsFile();
+
+        actions.setImageFile(blob);
+    }
+      event.preventDefault();
+    });
+    // inputRef.current.addEventListener("drop", event => {
+    //   console.log("drop");
+    //   const files = event.dataTransfer.files;
+    //   console.log(files[0]);
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // })
+  }, []);
   return (
     <div className="chat-footer">
       <form onSubmit={(e) => handleSendMessage(e)}>
@@ -80,6 +104,9 @@ export default function ChatFooter() {
             </li>
           )}
           <input
+            contentEditable
+            ref={inputRef}
+            id="chat-footer-input"
             type="text"
             value={message}
             onFocus={handleFocus}
