@@ -5,6 +5,9 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatContext } from "../../context/chat.context";
 import Typing from "./typing.component";
 import LottieEffect from "./effect.component";
+import SendImage from "./send-image.component";
+import { validate } from "uuid";
+import { Image } from "react-bootstrap";
 export default function Chat() {
   const [scrollEl, setScrollEl] = useState();
   const { state, actions } = React.useContext(ChatContext);
@@ -38,6 +41,12 @@ export default function Chat() {
         actions={actions}
         effects={state.effects}
         effectName={state.effectName}
+      />
+      <SendImage
+        file={state.imageFile}
+        actions={actions}
+        replyId={state.replyId}
+        replyMessage={state.replyMessage}
       />
       <React.Fragment>
         <ChatHeader room={state.room} roomIcon={state.roomIcon} />
@@ -77,20 +86,38 @@ export default function Chat() {
                       </div>
                     </div>
 
-                    <div className="message-content">
-                      {value.replyId.length > 0 && (
-                        <>
-                          <span className="reply-message-content">
-                            {value.replyMessage.length > 12
-                              ? value.replyMessage.substr(0, 12) + "..."
-                              : value.replyMessage}
-                          </span>
-                          <br />
-                        </>
-                      )}
+                    {value.type === "text" && (
+                      <div className="message-content">
+                        {value.replyId.length > 0 && (
+                          <>
+                            <span className="reply-message-content">
+                              {value.replyMessage.length > 12
+                                ? value.replyMessage.substr(0, 12) + "..."
+                                : value.replyMessage}
+                            </span>
+                            <br />
+                          </>
+                        )}
 
-                      {value.message}
-                    </div>
+                        {value.message}
+                      </div>
+                    )}
+                    {value.type === "image" && (
+                      <figure
+                        className={`${
+                          state.owner === value.userId &&
+                          "d-flex justify-content-end"
+                        }`}
+                      >
+                        <Image
+                          src={value.message}
+                          fluid
+                          rounded
+                          className="w-25"
+                          alt="message-image"
+                        />
+                      </figure>
+                    )}
                   </div>
                 );
               })}

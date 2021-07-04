@@ -23,6 +23,7 @@ class ChatProvider extends React.Component {
       isTyping: false,
       sender: "",
       roomIcon: "",
+      imageFile: null,
       lastMessage: {
         avatar: "",
         id: "",
@@ -133,6 +134,11 @@ class ChatProvider extends React.Component {
       replyMessage:"",
     })
   }
+  setImageFile = (file) => {
+    this.setState({
+      imageFile: file
+    })
+  }
   render() {
     const value = {
       state: {
@@ -149,6 +155,7 @@ class ChatProvider extends React.Component {
         lastMessage: this.state.lastMessage,
         replyId: this.state.replyId,
         replyMessage: this.state.replyMessage,
+        imageFile: this.state.imageFile,
       },
       actions: {
         leaveRoom: this.leaveRoom,
@@ -158,6 +165,7 @@ class ChatProvider extends React.Component {
         sendIsSeen: this.sendIsSeen,
         replyOldMessage: this.replyOldMessage,
         removeTagOldMessage: this.removeTagOldMessage,
+        setImageFile: this.setImageFile,
       },
     };
     return (
