@@ -11,6 +11,8 @@ import { Image } from "react-bootstrap";
 export default function Chat() {
   const [scrollEl, setScrollEl] = useState();
   const { state, actions } = React.useContext(ChatContext);
+  const container = React.useRef(null);
+
   useEffect(() => {
     if (scrollEl) {
       scrollEl.scrollTop = scrollEl.scrollHeight;
@@ -21,6 +23,19 @@ export default function Chat() {
   //     scrollEl.scrollTop = scrollEl.scrollHeight;
   //   }
   // });
+  useEffect(() => {
+    container.current.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+    container.current.addEventListener("drop", (event) => {
+      const files = event.dataTransfer.files;
+      console.log(files)
+      actions.setImageFile(files[0]);
+      event.preventDefault();
+      event.stopPropagation();
+    });
+  }, []);
   const exportSeen = (data) => {
     if (data.length < 4) {
       return data.map((value, index) => value.name).join(", ");
@@ -51,7 +66,7 @@ export default function Chat() {
       <React.Fragment>
         <ChatHeader room={state.room} roomIcon={state.roomIcon} />
         <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)}>
-          <div className="chat-body">
+          <div className="chat-body" ref={container}>
             <div className="messages">
               {state.messages.map((value, index) => {
                 return (
@@ -103,17 +118,14 @@ export default function Chat() {
                       </div>
                     )}
                     {value.type === "image" && (
-                      <figure
-                        className={`${
-                          state.owner === value.userId &&
-                          "d-flex justify-content-end"
-                        }`}
-                      >
+                      <figure>
                         <Image
+                          className={`w-25 ${
+                            state.owner === value.userId && "float-right"
+                          }`}
                           src={value.message}
                           fluid
                           rounded
-                          className="w-25"
                           alt="message-image"
                         />
                       </figure>

@@ -8,7 +8,6 @@ export default function SendImage({ file, actions, replyId, replyMessage }) {
   };
   const fileToBase64 = async (file) => {
     if (file) {
-      console.log(file);
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (e) => {
@@ -40,7 +39,9 @@ export default function SendImage({ file, actions, replyId, replyMessage }) {
   return (
     <Modal show={file ? true : false} centered onHide={onClose}>
       <Modal.Body className="text-center">
-        <Image fluid src={image} rounded />
+        <figure>
+          <Image fluid src={image} rounded className="w-50"/>
+        </figure>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={onSend}>
