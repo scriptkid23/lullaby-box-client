@@ -6,12 +6,10 @@ import { ChatContext } from "../../context/chat.context";
 import Typing from "./typing.component";
 import LottieEffect from "./effect.component";
 import SendImage from "./send-image.component";
-import { validate } from "uuid";
 import { Image } from "react-bootstrap";
 export default function Chat() {
   const [scrollEl, setScrollEl] = useState();
   const { state, actions } = React.useContext(ChatContext);
-  const container = React.useRef(null);
 
   useEffect(() => {
     if (scrollEl) {
@@ -24,8 +22,8 @@ export default function Chat() {
   //   }
   // });
   useEffect(() => {
-    var container = document.getElementById('chat-body-container');
-   
+    var container = document.getElementById("chat-body-container");
+
     container.addEventListener("dragover", (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -67,7 +65,10 @@ export default function Chat() {
       <React.Fragment>
         <ChatHeader room={state.room} roomIcon={state.roomIcon} />
 
-        <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)} id="chat-body-container">
+        <PerfectScrollbar
+          containerRef={(ref) => setScrollEl(ref)}
+          id="chat-body-container"
+        >
           <div className="chat-body">
             <div className="messages">
               {state.messages.map((value, index) => {
