@@ -24,13 +24,14 @@ export default function Chat() {
   //   }
   // });
   useEffect(() => {
-    container.current.addEventListener("dragover", (event) => {
+    var container = document.getElementById('chat-body-container');
+   
+    container.addEventListener("dragover", (event) => {
       event.preventDefault();
       event.stopPropagation();
     });
-    container.current.addEventListener("drop", (event) => {
+    container.addEventListener("drop", (event) => {
       const files = event.dataTransfer.files;
-      console.log(files)
       actions.setImageFile(files[0]);
       event.preventDefault();
       event.stopPropagation();
@@ -65,8 +66,9 @@ export default function Chat() {
       />
       <React.Fragment>
         <ChatHeader room={state.room} roomIcon={state.roomIcon} />
-        <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)}>
-          <div className="chat-body" ref={container}>
+
+        <PerfectScrollbar containerRef={(ref) => setScrollEl(ref)} id="chat-body-container">
+          <div className="chat-body">
             <div className="messages">
               {state.messages.map((value, index) => {
                 return (
