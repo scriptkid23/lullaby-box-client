@@ -7,10 +7,11 @@ import Typing from "./typing.component";
 import LottieEffect from "./effect.component";
 import SendImage from "./send-image.component";
 import { Image } from "react-bootstrap";
+import OpenImage from "./open-image.component";
 export default function Chat() {
   const [scrollEl, setScrollEl] = useState();
   const { state, actions } = React.useContext(ChatContext);
-
+  const [image, setImage] = React.useState(null);
   useEffect(() => {
     if (scrollEl) {
       scrollEl.scrollTop = scrollEl.scrollHeight;
@@ -48,6 +49,12 @@ export default function Chat() {
       return result.join(", ") + "...";
     }
   };
+  const closeImage = () => {
+    setImage(null);
+  }
+  const openImage = (image) => {
+    setImage(image)
+  }
   return (
     <div className="chat open">
       <LottieEffect
@@ -62,6 +69,10 @@ export default function Chat() {
         replyId={state.replyId}
         replyMessage={state.replyMessage}
       />
+      <OpenImage
+        image = {image}
+        onClose = {closeImage}
+      />
       <React.Fragment>
         <ChatHeader room={state.room} roomIcon={state.roomIcon} />
 
@@ -74,14 +85,8 @@ export default function Chat() {
               {state.messages.map((value, index) => {
                 return (
                   <div
-                    onClick={() =>
-                      actions.replyOldMessage({
-                        id: value.id,
-                        message: value.message,
-                      })
-                    }
                     key={value.id}
-                    className={`message-item pointer ${
+                    className={`message-item ${
                       state.owner === value.userId ? "outgoing-message" : " "
                     }`}
                   >
@@ -105,7 +110,15 @@ export default function Chat() {
                     </div>
 
                     {value.type === "text" && (
-                      <div className="message-content">
+                      <div
+                        className="message-content pointer"
+                        onClick={() =>
+                          actions.replyOldMessage({
+                            id: value.id,
+                            message: value.message,
+                          })
+                        }
+                      >
                         {value.replyId.length > 0 && (
                           <>
                             <span className="reply-message-content">
@@ -123,7 +136,8 @@ export default function Chat() {
                     {value.type === "image" && (
                       <figure>
                         <Image
-                          className={`w-25 ${
+                          onClick={() => openImage(value.message)}
+                          className={`w-25 pointer ${
                             state.owner === value.userId && "float-right"
                           }`}
                           src={value.message}
