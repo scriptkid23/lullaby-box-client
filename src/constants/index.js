@@ -1,6 +1,6 @@
 export const ENVIRONMENTS = {
-  DEVELOPMENT: "http://localhost:8081",
-  PRODUCTION: "http://metaphor-service.herokuapp.com",
+  DEVELOPMENT: "http://localhost:2006",
+  PRODUCTION: "http://localhost:2006",
 };
 export const baseUrl =
   !process.env.NODE_ENV || process.env.NODE_ENV === "development"

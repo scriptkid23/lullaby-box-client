@@ -1,8 +1,8 @@
 import SocketIOClient from "socket.io-client";
 
 export const ENVIRONMENTS = {
-  DEVELOPMENT: "ws://localhost:8081",
-  PRODUCTION: "http://metaphor-service.herokuapp.com/",
+  DEVELOPMENT: "ws://localhost:2006",
+  PRODUCTION: "http://localhost:2006",
 };
 const baseUrl =
   !process.env.NODE_ENV || process.env.NODE_ENV === "development"
