@@ -1,6 +1,6 @@
 export const ENVIRONMENTS = {
-  DEVELOPMENT: "http://35.198.193.235:2006",
-  PRODUCTION: "http://35.198.193.235:2006",
+  DEVELOPMENT: "https://34.142.244.8",
+  PRODUCTION: "https://34.142.244.8",
 };
 export const baseUrl =
   !process.env.NODE_ENV || process.env.NODE_ENV === "development"
