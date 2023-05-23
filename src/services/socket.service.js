@@ -11,7 +11,9 @@ const baseUrl =
 class SocketService {
   socket;
   constructor() {
-    this.socket = SocketIOClient(baseUrl);
+    this.socket = SocketIOClient(baseUrl, {
+      transports: ["websocket", "polling"],
+    });
   }
   sendSetTrackIndex = (value) => {
     this.socket.emit("SEND_SET_TRACK_INDEX", value);
@@ -32,11 +34,11 @@ class SocketService {
     this.socket.on("RECEIVER_EVENT_PLAY", callback);
   };
   sendIsTyping = (value) => {
-    this.socket.emit("SEND_IS_TYPING",value);
-  }
+    this.socket.emit("SEND_IS_TYPING", value);
+  };
   receiverIsTyping = (callback) => {
     this.socket.on("RECEIVER_IS_TYPING", callback);
-  }
+  };
   joinRoom = (value) => {
     this.socket.emit("JOIN_ROOM", value);
   };
@@ -50,17 +52,17 @@ class SocketService {
     this.socket.on("RECEIVER_LEAVE_ROOM", callback);
   };
   sendMessage = (value) => {
-    this.socket.emit("SEND_MESSAGE",value);
-  }
+    this.socket.emit("SEND_MESSAGE", value);
+  };
   receiverMessage = (callback) => {
-    this.socket.on("RECEIVER_MESSAGE",callback);
-  }
+    this.socket.on("RECEIVER_MESSAGE", callback);
+  };
   sendIsSeen = (value) => {
-    this.socket.emit('SEND_IS_SEEN',value)
-  }
+    this.socket.emit("SEND_IS_SEEN", value);
+  };
   receiverIsSeen = (callback) => {
-    this.socket.on('RECEIVER_IS_SEEN',callback);
-  }
+    this.socket.on("RECEIVER_IS_SEEN", callback);
+  };
   disconnect = () => {
     this.socket.disconnect();
   };
