@@ -1,8 +1,8 @@
 import SocketIOClient from "socket.io-client";
 
 export const ENVIRONMENTS = {
-  DEVELOPMENT: "ws://34.142.244.8",
-  PRODUCTION: "https://34.142.244.8",
+  DEVELOPMENT: "ws://api.tarend.app",
+  PRODUCTION: "https://api.tarend.app",
 };
 const baseUrl =
   !process.env.NODE_ENV || process.env.NODE_ENV === "development"

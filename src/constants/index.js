@@ -1,6 +1,6 @@
 export const ENVIRONMENTS = {
-  DEVELOPMENT: "https://34.142.244.8",
-  PRODUCTION: "https://34.142.244.8",
+  DEVELOPMENT: "https://api.tarend.app",
+  PRODUCTION: "https://api.tarend.app",
 };
 export const baseUrl =
   !process.env.NODE_ENV || process.env.NODE_ENV === "development"
